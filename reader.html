@@ -1596,14 +1596,86 @@
             rollouts, tool calling, and agent environments. Datasets differ in feedback source, scale, modality, and
             target use case.
           </p>
-          <figure class="paper-figure">
-            <img src="assets/figures/fig-systems-table.png" alt="Cropped table showing RL systems for LLM training">
-            <figcaption>Representative RL systems can be compared by algorithm support, modality, rollout design, and agent-training features.</figcaption>
-          </figure>
-          <figure class="paper-figure">
-            <img src="assets/figures/fig-datasets-table.png" alt="Cropped table showing RL datasets and environments">
-            <figcaption>Datasets and environments can be organized by reward modeling, reasoning, and agentic use cases.</figcaption>
-          </figure>
+          <h3>Systems</h3>
+          <div class="table-scroll">
+            <table class="resource-table systems-table">
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th>Text</th>
+                  <th>Image</th>
+                  <th>Video</th>
+                  <th>Audio</th>
+                  <th>Supported Training Approaches</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><a href="https://github.com/huggingface/trl">TRL</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>SFT, Reward Modeling, PPO, GRPO, RLOO, DPO, KTO, ORPO, Online-DPO; Agentic RL via OpenEnv/Harbor.</td></tr>
+                <tr><td><a href="https://github.com/OpenRLHF/OpenRLHF">OpenRLHF</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>SFT, RM, PPO, REINFORCE++, GRPO, RLOO, Dr.GRPO, DPO, KTO; Agentic RL with single-turn/multi-turn executors.</td></tr>
+                <tr><td><a href="https://github.com/verl-project/verl">verl</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>SFT, PPO, GRPO, GSPO, ReMax, REINFORCE++, RLOO, DAPO, Dr.GRPO; Agentic RL via multi-turn tool calling.</td></tr>
+                <tr><td><a href="https://github.com/langfengQ/verl-agent">verl-agent</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>GiGPO, GRPO, PPO, DAPO, GSPO, RLOO, REINFORCE++, LoRA; purpose-built Agentic RL for long-horizon LLM/VLM agents.</td></tr>
+                <tr><td><a href="https://github.com/hiyouga/EasyR1">EasyR1</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>GRPO, DAPO, REINFORCE++, ReMax, RLOO, GSPO, CISPO; no native Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/hiyouga/LLaMA-Factory">LLaMA-Factory</a></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Pre-training, SFT, RM, PPO, DPO, KTO, ORPO, SimPO; no native Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/ByteDance-Seed/VeOmni">VeOmni</a></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Single-/multi-modal pre-training and post-training, SFT-style training, DPO, RL trainer backend; no native Agentic RL environment stack.</td></tr>
+                <tr><td><a href="https://github.com/modelscope/ms-swift">ms-swift</a></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Pre-training, SFT, RM, PPO, GRPO, DPO, KTO, ORPO, CPO, SimPO, GKD; Agentic RL via multi-turn GRPO/tool-use training.</td></tr>
+                <tr><td><a href="https://github.com/PKU-Alignment/align-anything">Align-Anything</a></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>SFT, RM, PPO, DPO, KTO, ORPO, SimPO, rule-based RL; Agent RL on roadmap.</td></tr>
+                <tr><td><a href="https://github.com/OpenRLHF/OpenRLHF-M">OpenRLHF-M</a></td><td>No</td><td>Yes</td><td>No</td><td>No</td><td>PPO, GRPO, RLOO, Online-RLHF, Rejection Sampling for multimodal models; no native Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/microsoft/DeepSpeed/tree/master/blogs/deepspeed-chat">DeepSpeed-Chat</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>SFT, Reward Modeling, PPO-based RLHF; no native Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/alibaba/ROLL">ROLL</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>SFT, DPO, distillation, PPO, GRPO, REINFORCE++, GSPO, RAFT++, StarPO, GiGPO; Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/THUDM/slime">slime</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>PPO, GRPO, GSPO, REINFORCE++, OPD; Agentic RL via custom generation, tools, sandboxes, and verifier rewards.</td></tr>
+                <tr><td><a href="https://github.com/Gen-Verse/OpenClaw-RL">OpenClaw-RL</a></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>Binary RL/GRPO, OPD, Hybrid RL, LoRA training; asynchronous Agentic RL for personalized agents, terminal, GUI, SWE, and tool-call settings.</td></tr>
+                <tr><td><a href="https://github.com/NovaSky-AI/SkyRL">SkyRL</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>GRPO, DAPO, async RL, Tinker-compatible training; Agentic RL for tool-use, search, SQL, and long-horizon tasks.</td></tr>
+                <tr><td><a href="https://github.com/microsoft/agent-lightning">Agent Lightning</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>RL, APO, SFT-style optimization hooks; purpose-built Agentic RL for existing agent frameworks.</td></tr>
+                <tr><td><a href="https://github.com/mll-lab-nu/RAGEN">RAGEN</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>PPO/StarPO-style multi-turn optimization, environment rewards; Agentic RL.</td></tr>
+                <tr><td><a href="https://github.com/PeterGriffinJin/Search-R1">Search-R1</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>PPO, GRPO, REINFORCE for reasoning-search interleaved models; Agentic RL for search/tool use.</td></tr>
+                <tr><td><a href="https://github.com/areal-project/AReaL">AReaL</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>PPO/GRPO-style RL with agent-framework integration; Agentic RL.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Datasets</h3>
+          <div class="table-scroll">
+            <table class="resource-table datasets-table">
+              <thead>
+                <tr>
+                  <th>Dataset</th>
+                  <th>RM</th>
+                  <th>Reasoning</th>
+                  <th>Agent</th>
+                  <th>Scale</th>
+                  <th>Modality</th>
+                  <th>Source</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">Anthropic/hh-rlhf</a></td><td>Yes</td><td>No</td><td>No</td><td>169K</td><td>Text</td><td>Human</td><td>Pairwise preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/stanfordnlp/SHP-2">stanfordnlp/SHP-2</a></td><td>Yes</td><td>No</td><td>No</td><td>4.8M</td><td>Text</td><td>Human / crowd</td><td>Pairwise preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/HuggingFaceH4/stack-exchange-preferences">H4/stack-exchange-preferences</a></td><td>Yes</td><td>No</td><td>No</td><td>10.7M</td><td>Text</td><td>Crowd score</td><td>Score / ranking</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/openai/summarize_from_feedback">Summarize from Feedback</a></td><td>Yes</td><td>No</td><td>No</td><td>64.8K</td><td>Text</td><td>Human</td><td>Pairwise preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/openbmb/UltraFeedback">UltraFeedback</a></td><td>Yes</td><td>No</td><td>No</td><td>64K / 340K</td><td>Text</td><td>GPT-4</td><td>Scores, critiques, pairs</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/berkeley-nest/Nectar">berkeley-nest/Nectar</a></td><td>Yes</td><td>No</td><td>No</td><td>183K / 3.8M</td><td>Text</td><td>GPT-4</td><td>7-way ranking</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/Skywork/Skywork-Reward-Preference-80K-v0.2">Skywork-Reward-Preference-80K</a></td><td>Yes</td><td>No</td><td>No</td><td>80K</td><td>Text</td><td>Mixed / curated</td><td>Pairwise preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/nvidia/HelpSteer">nvidia/HelpSteer</a></td><td>Yes</td><td>No</td><td>No</td><td>37K</td><td>Text</td><td>Human</td><td>Attribute scores</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/nvidia/HelpSteer2">nvidia/HelpSteer2</a></td><td>Yes</td><td>No</td><td>No</td><td>10K pairs</td><td>Text</td><td>Human</td><td>Attribute scores / preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/nvidia/HelpSteer3">nvidia/HelpSteer3</a></td><td>Yes</td><td>No</td><td>No</td><td>40K pref.</td><td>Text</td><td>Human</td><td>Preference, feedback, edits</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/lmarena-ai/arena-human-preference-55k">Arena Human Preference 55K</a></td><td>Yes</td><td>No</td><td>No</td><td>55K</td><td>Text</td><td>Human users</td><td>Arena battle preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/MMInstruction/VLFeedback">VLFeedback</a></td><td>Yes</td><td>No</td><td>No</td><td>80K / 380K</td><td>Text, Image</td><td>GPT-4V</td><td>Multimodal preference</td></tr>
+                <tr><td><a href="https://github.com/RLHF-V/RLHF-V">RLHF-V-Dataset</a></td><td>Yes</td><td>No</td><td>No</td><td>5.7K</td><td>Text, Image</td><td>Human</td><td>Fine-grained correction</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/openbmb/RLAIF-V-Dataset">openbmb/RLAIF-V-Dataset</a></td><td>Yes</td><td>No</td><td>No</td><td>83K</td><td>Text, Image</td><td>AI feedback</td><td>Pairwise preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2">OpenGVLab/MMPR-v1.2</a></td><td>Yes</td><td>Yes</td><td>No</td><td>3M</td><td>Text, Image</td><td>AI / verifier</td><td>Multimodal reasoning preference</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/open-r1/OpenR1-Math-220k">open-r1/OpenR1-Math-220k</a></td><td>No</td><td>Yes</td><td>No</td><td>220K</td><td>Text</td><td>Verifier / judge</td><td>Math reasoning traces</td></tr>
+                <tr><td><a href="https://huggingface.co/collections/AI-MO/numinamath">AI-MO/NuminaMath</a></td><td>No</td><td>Yes</td><td>No</td><td>900K</td><td>Text</td><td>Rule / GPT-4</td><td>Math CoT / TIR</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/PRIME-RL/Eurus-2-RL-Data">PRIME-RL/Eurus-2-RL-Data</a></td><td>No</td><td>Yes</td><td>No</td><td>482K</td><td>Text</td><td>Verifier</td><td>Math/code outcome reward</td></tr>
+                <tr><td><a href="https://huggingface.co/datasets/AgentGym/AgentGym-RL-Data-ID">AgentGym-RL-Data</a></td><td>No</td><td>Yes</td><td>Yes</td><td>184K</td><td>Text</td><td>Env.</td><td>Multi-turn agent reward</td></tr>
+                <tr><td><a href="https://github.com/alfworld/alfworld">ALFWorld</a></td><td>No</td><td>No</td><td>Yes</td><td>3.5K train</td><td>Text</td><td>Env.</td><td>Text-world task reward</td></tr>
+                <tr><td><a href="https://github.com/princeton-nlp/WebShop">WebShop</a></td><td>No</td><td>No</td><td>Yes</td><td>12K tasks</td><td>Text</td><td>Env.</td><td>Web shopping reward</td></tr>
+                <tr><td><a href="https://github.com/PeterGriffinJin/Search-R1">Search-R1 Data</a></td><td>No</td><td>Yes</td><td>Yes</td><td>170K train</td><td>Text</td><td>Retriever / rule</td><td>Search-tool QA reward</td></tr>
+                <tr><td><a href="https://github.com/langfengQ/verl-agent">Sokoban</a></td><td>No</td><td>Yes</td><td>Yes</td><td>Env. gen.</td><td>Text, Image</td><td>Env.</td><td>Puzzle-solving reward</td></tr>
+                <tr><td><a href="https://github.com/langfengQ/verl-agent">Gym Cards</a></td><td>No</td><td>Yes</td><td>Yes</td><td>Env. gen.</td><td>Text, Image</td><td>Env.</td><td>Logic-game reward</td></tr>
+                <tr><td><a href="https://github.com/OpenBMB/ToolBench">ToolBench</a></td><td>No</td><td>Yes</td><td>Yes</td><td>126K</td><td>Text</td><td>API execution</td><td>Tool-use trajectories</td></tr>
+              </tbody>
+            </table>
+          </div>
           <p>
             This resource layer makes the introduction more practical. New methods and systems appear quickly,
             especially around reasoning RL, agentic RL, and multimodal post-training, so the website can give
