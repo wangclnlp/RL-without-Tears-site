@@ -392,6 +392,7 @@ p {
 
 .chapter-list li {
   position: relative;
+  scroll-margin-top: 90px;
   padding: 19px 0 19px 58px;
   border-bottom: 1px solid var(--line);
   counter-increment: chapters;
