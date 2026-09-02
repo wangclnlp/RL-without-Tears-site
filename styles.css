@@ -981,12 +981,30 @@ code {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 18px;
-  width: min(1200px, calc(100% - 48px));
+  gap: 16px 28px;
+  width: min(1240px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 30px 0 46px;
+  padding: 24px 0 42px;
   color: var(--muted);
   font-size: 0.92rem;
+  border-top: 1px solid var(--line);
+}
+
+.footer-copy {
+  min-width: min(100%, 360px);
+}
+
+.footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.footer-actions > a:not(.flag-counter) {
+  color: var(--link);
+  font-weight: 700;
 }
 
 .flag-counter {
@@ -1009,7 +1027,7 @@ code {
 
 .flag-counter img {
   display: block;
-  width: 88px;
+  width: 112px;
   height: auto;
 }
 
@@ -1125,6 +1143,11 @@ code {
 
   .footer {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-actions {
+    margin-left: 0;
   }
 }
 
