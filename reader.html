@@ -1597,6 +1597,10 @@
             target use case.
           </p>
           <figure class="paper-figure">
+            <img src="assets/figures/fig-systems-table.png" alt="Cropped table showing RL systems for LLM training">
+            <figcaption>Representative RL systems can be compared by algorithm support, modality, rollout design, and agent-training features.</figcaption>
+          </figure>
+          <figure class="paper-figure">
             <img src="assets/figures/fig-datasets-table.png" alt="Cropped table showing RL datasets and environments">
             <figcaption>Datasets and environments can be organized by reward modeling, reasoning, and agentic use cases.</figcaption>
           </figure>
@@ -1604,6 +1608,10 @@
             This resource layer makes the introduction more practical. New methods and systems appear quickly,
             especially around reasoning RL, agentic RL, and multimodal post-training, so the website can give
             readers a compact entry point into the surrounding ecosystem.
+          </p>
+          <p class="update-note">
+            Note: the systems table was compiled in August 2026. Some systems may have changed after publication; if
+            current releases differ from the table, please contact the authors so the information can be updated.
           </p>
           <div class="note-list">
             <div><strong>Preference data.</strong> Human or AI comparisons for reward modeling and preference optimization.</div>
@@ -1618,34 +1626,34 @@
           <h2>References</h2>
           <ol class="reference-list">
             <li id="ref-1">Richard S. Sutton and Andrew G. Barto. <em>Reinforcement Learning: An Introduction (2nd ed.)</em>. The MIT Press, 2018.</li>
-            <li id="ref-2">Long Ouyang et al. Training language models to follow instructions with human feedback. <em>NeurIPS 2022</em>, 2022.</li>
-            <li id="ref-3">Paul F. Christiano et al. Deep reinforcement learning from human preferences. <em>NeurIPS 2017</em>, 2017.</li>
-            <li id="ref-4">John Schulman et al. Proximal policy optimization algorithms, 2017.</li>
+            <li id="ref-2">Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul F. Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. <em>NeurIPS 2022</em>, 2022.</li>
+            <li id="ref-3">Paul F. Christiano, Jan Leike, Tom B. Brown, Miljan Martic, Shane Legg, and Dario Amodei. Deep reinforcement learning from human preferences. <em>NeurIPS 2017</em>, 2017.</li>
+            <li id="ref-4">John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms, 2017.</li>
             <li id="ref-5">Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: I. the method of paired comparisons. <em>Biometrika</em>, 1952.</li>
-            <li id="ref-6">Dakota Mahan et al. Generative reward models, 2024.</li>
-            <li id="ref-7">Tianci Liu et al. OpenRubrics: Towards scalable synthetic rubric generation for reward modeling and LLM alignment. <em>ACL 2026</em>, 2026.</li>
-            <li id="ref-8">Nathan Lambert et al. RewardBench: Evaluating reward models for language modeling. <em>Findings of NAACL 2025</em>, 2025.</li>
-            <li id="ref-9">John Schulman et al. High-dimensional continuous control using generalized advantage estimation. <em>ICLR 2016</em>, 2016.</li>
-            <li id="ref-10">Zhihong Shao et al. DeepSeekMath: Pushing the limits of mathematical reasoning in open language models, 2024.</li>
-            <li id="ref-11">Rafael Rafailov et al. Direct preference optimization: Your language model is secretly a reward model. <em>NeurIPS 2023</em>, 2023.</li>
+            <li id="ref-6">Dakota Mahan, Duy Van Phung, Rafael Rafailov, Chase Blagden, Nathan Lile, Louis Castricato, Jan-Philipp Franken, Chelsea Finn, and Alon Albalak. Generative reward models, 2024.</li>
+            <li id="ref-7">Tianci Liu, Ran Xu, Tony Yu, Ilgee Hong, Carl Yang, Tuo Zhao, and Haoyu Wang. OpenRubrics: Towards scalable synthetic rubric generation for reward modeling and LLM alignment. <em>ACL 2026</em>, 2026.</li>
+            <li id="ref-8">Nathan Lambert, Valentina Pyatkin, Jacob Morrison, LJ Miranda, Bill Yuchen Lin, Khyathi Chandu, Nouha Dziri, Sachin Kumar, Tom Zick, Yejin Choi, Noah A. Smith, and Hannaneh Hajishirzi. RewardBench: Evaluating reward models for language modeling. <em>Findings of NAACL 2025</em>, 2025.</li>
+            <li id="ref-9">John Schulman, Philipp Moritz, Sergey Levine, Michael I. Jordan, and Pieter Abbeel. High-dimensional continuous control using generalized advantage estimation. <em>ICLR 2016</em>, 2016.</li>
+            <li id="ref-10">Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, et al. DeepSeekMath: Pushing the limits of mathematical reasoning in open language models, 2024.</li>
+            <li id="ref-11">Rafael Rafailov, Archit Sharma, Eric Mitchell, Christopher D. Manning, Stefano Ermon, and Chelsea Finn. Direct preference optimization: Your language model is secretly a reward model. <em>NeurIPS 2023</em>, 2023.</li>
             <li id="ref-12">DeepSeek. DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning, 2025.</li>
-            <li id="ref-13">Hunter Lightman et al. Let's verify step by step. <em>ICLR 2024</em>, 2024.</li>
-            <li id="ref-14">David Silver et al. Mastering the game of Go without human knowledge. <em>Nature</em>, 2017.</li>
-            <li id="ref-15">Shunyu Yao et al. ReAct: Synergizing reasoning and acting in language models. <em>ICLR 2023</em>, 2023.</li>
-            <li id="ref-16">Timo Schick et al. Toolformer: Language models can teach themselves to use tools. <em>NeurIPS 2023</em>, 2023.</li>
-            <li id="ref-17">Cheng Qian et al. ToolRL: Reward is all tool learning needs. <em>NeurIPS 2025</em>, 2025.</li>
-            <li id="ref-18">Mengkang Hu et al. AgentGen: Enhancing planning abilities for large language model based agent via environment and task generation. <em>KDD 2025</em>, 2025.</li>
-            <li id="ref-19">Zhiwei Li et al. Encouraging good processes without the need for good answers: Reinforcement learning for LLM agent planning. <em>EMNLP Industry Track 2025</em>, 2025.</li>
-            <li id="ref-20">Noah Shinn et al. Reflexion: language agents with verbal reinforcement learning. <em>NeurIPS 2023</em>, 2023.</li>
-            <li id="ref-21">Zhiqing Sun et al. Aligning large multimodal models with factually augmented RLHF. <em>Findings of ACL 2024</em>, 2024.</li>
-            <li id="ref-22">Ying Fan et al. DPOK: Reinforcement learning for fine-tuning text-to-image diffusion models. <em>NeurIPS 2023</em>, 2023.</li>
-            <li id="ref-23">Jie Liu et al. Flow-GRPO: Training flow matching models via online RL. <em>NeurIPS 2025</em>, 2025.</li>
+            <li id="ref-13">Hunter Lightman, Vineet Kosaraju, Yuri Burda, Harrison Edwards, Bowen Baker, Teddy Lee, Jan Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let's verify step by step. <em>ICLR 2024</em>, 2024.</li>
+            <li id="ref-14">David Silver, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja Huang, Arthur Guez, Thomas Hubert, Lucas Baker, Matthew Lai, Adrian Bolton, et al. Mastering the game of Go without human knowledge. <em>Nature</em>, 2017.</li>
+            <li id="ref-15">Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik R. Narasimhan, and Yuan Cao. ReAct: Synergizing reasoning and acting in language models. <em>ICLR 2023</em>, 2023.</li>
+            <li id="ref-16">Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta Raileanu, Maria Lomeli, Eric Hambro, Luke Zettlemoyer, Nicola Cancedda, and Thomas Scialom. Toolformer: Language models can teach themselves to use tools. <em>NeurIPS 2023</em>, 2023.</li>
+            <li id="ref-17">Cheng Qian, Emre Can Acikgoz, Qi He, Hongru Wang, Xiusi Chen, Dilek Hakkani-Tur, Gokhan Tur, and Heng Ji. ToolRL: Reward is all tool learning needs. <em>NeurIPS 2025</em>, 2025.</li>
+            <li id="ref-18">Mengkang Hu, Pu Zhao, Can Xu, Qingfeng Sun, Jian-Guang Lou, Qingwei Lin, Ping Luo, and Saravan Rajmohan. AgentGen: Enhancing planning abilities for large language model based agent via environment and task generation. <em>KDD 2025</em>, 2025.</li>
+            <li id="ref-19">Zhiwei Li, Yong Hu, and Wenqing Wang. Encouraging good processes without the need for good answers: Reinforcement learning for LLM agent planning. <em>EMNLP Industry Track 2025</em>, 2025.</li>
+            <li id="ref-20">Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao. Reflexion: language agents with verbal reinforcement learning. <em>NeurIPS 2023</em>, 2023.</li>
+            <li id="ref-21">Zhiqing Sun, Sheng Shen, Shengcao Cao, Haotian Liu, Chunyuan Li, Yikang Shen, Chuang Gan, Liangyan Gui, Yu-Xiong Wang, Yiming Yang, Kurt Keutzer, and Trevor Darrell. Aligning large multimodal models with factually augmented RLHF. <em>Findings of ACL 2024</em>, 2024.</li>
+            <li id="ref-22">Ying Fan, Olivia Watkins, Yuqing Du, Hao Liu, Moonkyung Ryu, Craig Boutilier, Pieter Abbeel, Mohammad Ghavamzadeh, Kangwook Lee, and Kimin Lee. DPOK: Reinforcement learning for fine-tuning text-to-image diffusion models. <em>NeurIPS 2023</em>, 2023.</li>
+            <li id="ref-23">Jie Liu, Gongye Liu, Jiajun Liang, Yangguang Li, Jiaheng Liu, Xintao Wang, Pengfei Wan, Di Zhang, and Wanli Ouyang. Flow-GRPO: Training flow matching models via online RL. <em>NeurIPS 2025</em>, 2025.</li>
             <li id="ref-24">David Silver, Satinder Singh, Doina Precup, and Richard S. Sutton. Reward is enough. <em>Artificial Intelligence</em>, 2021.</li>
-            <li id="ref-25">Sikuan Yan et al. Memory-R1: Enhancing large language model agents to manage and utilize memories via reinforcement learning. <em>ACL 2026</em>, 2026.</li>
-            <li id="ref-26">Yu Wang et al. Mem-alpha: Learning memory construction via reinforcement learning, 2025.</li>
-            <li id="ref-27">Peng Xia et al. SkillRL: Evolving agents via recursive skill-augmented reinforcement learning, 2026.</li>
-            <li id="ref-28">Dayuan Fu et al. AgentRefine: Enhancing agent generalization through refinement tuning. <em>ICLR 2025</em>, 2025.</li>
-            <li id="ref-29">Yifan Song et al. Trial and error: Exploration-based trajectory optimization of LLM agents. <em>ACL 2024</em>, 2024.</li>
+            <li id="ref-25">Sikuan Yan, Xiufeng Yang, Zuchao Huang, Ercong Nie, Zifeng Ding, Zonggen Li, Xiaowen Ma, Jinhe Bi, Kristian Kersting, Jeff Z. Pan, Hinrich Schuetze, Volker Tresp, and Yunpu Ma. Memory-R1: Enhancing large language model agents to manage and utilize memories via reinforcement learning. <em>ACL 2026</em>, 2026.</li>
+            <li id="ref-26">Yu Wang, Ryuichi Takanobu, Zhiqi Liang, Yuzhen Mao, Yuanzhe Hu, Julian McAuley, and Xiaojian Wu. Mem-alpha: Learning memory construction via reinforcement learning, 2025.</li>
+            <li id="ref-27">Peng Xia, Jianwen Chen, Hanyang Wang, Jiaqi Liu, Kaide Zeng, Yu Wang, Siwei Han, Yiyang Zhou, Xujiang Zhao, Haifeng Chen, et al. SkillRL: Evolving agents via recursive skill-augmented reinforcement learning, 2026.</li>
+            <li id="ref-28">Dayuan Fu, Keqing He, Yejie Wang, Wentao Hong, Zhuoma Gongque, Weihao Zeng, Wei Wang, Jingang Wang, Xunliang Cai, and Weiran Xu. AgentRefine: Enhancing agent generalization through refinement tuning. <em>ICLR 2025</em>, 2025.</li>
+            <li id="ref-29">Yifan Song, Da Yin, Xiang Yue, Jie Huang, Sujian Li, and Bill Yuchen Lin. Trial and error: Exploration-based trajectory optimization of LLM agents. <em>ACL 2024</em>, 2024.</li>
           </ol>
         </section>
 

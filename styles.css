@@ -983,6 +983,15 @@ code {
   line-height: 1.55;
 }
 
+.update-note {
+  margin: 18px 0 0;
+  padding-left: 14px;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.62;
+  border-left: 3px solid var(--accent);
+}
+
 .note-list {
   display: grid;
   gap: 0;
