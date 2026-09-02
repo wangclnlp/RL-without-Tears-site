@@ -564,13 +564,6 @@ code {
   text-decoration: none;
 }
 
-.lesson-map a:first-child {
-  grid-column: 1 / -1;
-  background:
-    linear-gradient(90deg, rgba(53, 109, 91, 0.1), rgba(34, 95, 143, 0.06)),
-    #ffffff;
-}
-
 .chapter {
   scroll-margin-top: 82px;
 }
