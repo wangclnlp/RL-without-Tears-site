@@ -72,7 +72,7 @@
             <a class="nav-sub" href="#agent-capabilities">6.1 Capabilities</a>
             <a class="nav-sub" href="#environment-design">6.2 Environments</a>
             <a class="nav-sub" href="#credit-assignment">6.3 Credit Assignment</a>
-            <a class="nav-sub" href="#agent-experience">6.4 Experience</a>
+            <a class="nav-sub" href="#agent-experience">6.4 Experience Learning</a>
           </details>
           <details>
             <summary><a href="#multimodal">7. Multimodal</a></summary>
@@ -346,6 +346,58 @@
             conditional distribution over generated tokens. Since it is impossible to enumerate all possible outputs,
             the expectation is estimated with sampled responses.
           </p>
+          <div class="derivation">
+            <p class="derivation-label">From the paper's LLM notation</p>
+            <div class="equation">
+              \[
+                \begin{aligned}
+                  J(\theta)
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \sum_{\mathbf{y}\in\Omega}
+                    \mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})
+                    R(\mathbf{y})
+                  \right] \\
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \sum_{\mathbf{y}\in\Omega}
+                    \mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})
+                    \sum_{t=1}^{T}r_t
+                  \right]
+                \end{aligned}
+              \]
+            </div>
+            <p>
+              Because the hypothesis space \(\Omega\) is too large to enumerate, the paper approximates it with
+              sampled outputs \(\mathcal{D}=\{\mathbf{y}_1,\ldots,\mathbf{y}_d\}\).
+            </p>
+            <div class="equation">
+              \[
+                \begin{aligned}
+                  \frac{\partial J(\theta)}{\partial\theta}
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \sum_{\mathbf{y}\in\mathcal{D}}
+                    \mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})
+                    \frac{\partial \log\mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})}{\partial\theta}
+                    R(\mathbf{y})
+                  \right] \\
+                  \frac{\partial J(\theta)}{\partial\theta}
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \frac{1}{d}
+                    \sum_{\mathbf{y}\in\mathcal{D}}
+                    \frac{\partial \log\mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})}{\partial\theta}
+                    R(\mathbf{y})
+                  \right]
+                \end{aligned}
+              \]
+            </div>
+          </div>
           <div class="equation">
             \[
               \nabla J(\theta)
@@ -389,6 +441,52 @@
             decomposed into token-level probabilities. This allows a sequence-level reward to affect token-level
             model updates.
           </p>
+          <div class="derivation">
+            <p class="derivation-label">Time-step decomposition from the paper</p>
+            <div class="equation">
+              \[
+                \begin{aligned}
+                  \frac{\partial \log \mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})}{\partial\theta}
+                  R(\mathbf{y})
+                  &=
+                  \left(
+                    \sum_{t=1}^{T}
+                    \frac{\partial \log \mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}{\partial\theta}
+                  \right)
+                  \left(
+                    \sum_{k=1}^{T}r_k
+                  \right) \\
+                  &=
+                  \sum_{t=1}^{T}
+                  \frac{\partial \log \mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}{\partial\theta}
+                  \left(
+                    \sum_{k=1}^{t-1}r_k
+                    +
+                    \sum_{k=t}^{T}r_k
+                  \right)
+                \end{aligned}
+              \]
+            </div>
+            <p>
+              At the \(t\)-th generation step, \(y_t\) does not affect the past-reward term
+              \(\sum_{k=1}^{t-1}r_k\). The paper therefore removes that term and keeps the future return from
+              \(t\) onward.
+            </p>
+            <div class="equation">
+              \[
+                \frac{\partial J(\theta)}{\partial\theta}
+                =
+                \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                \left[
+                  \frac{1}{d}
+                  \sum_{\mathbf{y}\in\mathcal{D}}
+                  \sum_{t=1}^{T}
+                  \frac{\partial \log \mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}{\partial\theta}
+                  \sum_{k=t}^{T}r_k
+                \right]
+              \]
+            </div>
+          </div>
           <p>
             The difficulty is that sequence-level rewards do not directly tell us which token caused success or
             failure. A correct answer may contain many ordinary tokens that are not responsible for the reward. An
@@ -501,6 +599,44 @@
             again with a limit. This makes PPO suitable for RLHF, where excessive reward optimization can damage
             language quality or exploit weaknesses in the reward model.
           </p>
+          <div class="equation">
+            \[
+              \mathcal{L}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+              \mathbb{E}_{\mathbf{y}\sim\mathrm{Pr}_{\theta_{\mathrm{ref}}}(\cdot\mid\mathbf{x})}
+              \left[
+                \sum_{t=1}^{T}
+                \left(
+                  \mathrm{Clip}\left(
+                    \frac{\mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}
+                         {\mathrm{Pr}_{\theta_{\mathrm{ref}}}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}
+                    A_t
+                  \right)
+                  -
+                  \beta \mathrm{Penalty}_t
+                \right)
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            This is the paper's PPO loss: the clipped advantage term updates the policy, while
+            \(\beta \mathrm{Penalty}_t\) constrains drift from the reference model.
+          </p>
+          <aside class="callout">
+            <strong>Penalty term.</strong>
+            In the paper, the time-step penalty is
+            \[
+              \mathrm{Penalty}_t
+              =
+              \log \mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})
+              -
+              \log \mathrm{Pr}_{\theta_{\mathrm{ref}}}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t}).
+            \]
+            It measures how far the current policy moves from the reference policy on the same sampled token.
+            The coefficient \(\beta\) is the weight of this penalty.
+          </aside>
 
           <h3 id="reward-models">3.6 Training Reward Models</h3>
           <p>
@@ -694,6 +830,30 @@
             <img src="assets/figures/fig-grpo.png" alt="Diagram showing Group Relative Policy Optimization">
             <figcaption>GRPO estimates relative advantages from a group of sampled responses.</figcaption>
           </figure>
+          <div class="equation">
+            \[
+              \mathcal{L}_{g}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+              \frac{1}{G}
+              \sum_{i=1}^{G}
+              \left[
+                \sum_{t=1}^{T}
+                \mathrm{Clip}\left(
+                  \frac{\mathrm{Pr}_{\theta}(y_{i,t}\mid\mathbf{x},\mathbf{y}_{i,&lt;t})}
+                       {\mathrm{Pr}_{\theta_{\mathrm{ref}}}(y_{i,t}\mid\mathbf{x},\mathbf{y}_{i,&lt;t})}
+                  A_{i,t}^{\mathrm{grpo}}
+                \right)
+                -
+                \beta \mathrm{Penalty}
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            Here, \(G\) is the number of sampled outputs in the group, and
+            \(A_{i,t}^{\mathrm{grpo}}\) is the group-relative advantage used for the \(i\)-th output.
+          </p>
           <p>
             This method is well suited to reasoning tasks, where multiple candidate solutions can be generated and
             scored by a verifier. The group provides a natural baseline. Removing the critic can simplify training
@@ -959,12 +1119,33 @@
             success or failure to the decisions that actually caused it <a class="citation" href="#ref-19">[19]</a>.
           </p>
 
-          <h3 id="agent-experience">6.4 Learning from Agentic Experience</h3>
+          <h3 id="agent-experience">6.4 Experience Learning</h3>
           <p>
-            Agentic systems should learn not only from labels, but also from their own experience. The paper
-            discusses memory management, skill optimization, and trajectory refinement as three mechanisms for
-            converting interaction histories into reusable competence.
+            Agentic systems should learn not only from human demonstrations, but also from their own interaction
+            experience. As agents operate in dynamic environments, they collect both successful and failed
+            trajectories. These trajectories can reveal reusable knowledge, recurring solution patterns, and
+            failure modes that are difficult to cover with static supervised data.
           </p>
+          <p>
+            The paper describes this shift as moving toward agent self-evolution: the agent improves future behavior
+            by accumulating, organizing, and reusing experience. In the website view, three mechanisms carry most of
+            this section: memory management stores useful information, skill optimization abstracts repeated
+            behaviors into reusable workflows, and trajectory refinement revises agent behavior from feedback.
+          </p>
+          <table class="concept-table compact">
+            <thead>
+              <tr>
+                <th>Mechanism</th>
+                <th>What It Keeps From Experience</th>
+                <th>How It Improves the Agent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Memory management</td><td>User preferences, task facts, successful or failed trajectories.</td><td>Retrieves relevant past experience and learns which memories to add, update, delete, or ignore.</td></tr>
+              <tr><td>Skill optimization</td><td>Reusable patterns across multiple trajectories.</td><td>Turns low-level experience into high-level workflows that guide planning and tool use.</td></tr>
+              <tr><td>Trajectory refinement</td><td>Feedback from the current attempt.</td><td>Uses reflection or evaluator feedback to revise later attempts, sometimes as in-context policy improvement.</td></tr>
+            </tbody>
+          </table>
 
           <h3 id="memory-management">6.4.1 Memory Management</h3>
           <p>
@@ -977,34 +1158,142 @@
             <img src="assets/figures/fig-agent-memory.png" alt="Diagram showing memory systems for agentic interaction">
             <figcaption>A memory manager selects useful experience and updates the memory bank.</figcaption>
           </figure>
+          <div class="stage-list" aria-label="Memory management stages">
+            <div><span>Stage 1</span><strong>Memory Retrieval</strong><p>Retrieve relevant memories from the memory bank to support the current interaction.</p></div>
+            <div><span>Stage 2</span><strong>Memory Extraction</strong><p>Extract useful information from the completed interaction for future use.</p></div>
+            <div><span>Stage 3</span><strong>Memory Update</strong><p>Integrate new information by adding, revising, deleting, or ignoring memories.</p></div>
+          </div>
           <p>
-            RL can train memory operations by rewarding future task success. If a stored memory helps the agent
-            solve later tasks, the memory decision receives positive feedback. If it misleads the agent, the memory
-            operation should be discouraged.
+            A straightforward memory system can simply retrieve related content and store newly extracted facts.
+            The paper emphasizes that this becomes difficult as experience accumulates: the memory bank may contain
+            redundant, outdated, or contradictory information. A more selective system treats memory maintenance as
+            an operation-selection problem:
+          </p>
+          <div class="equation">
+            \[
+              a^m \in \{\texttt{ADD},\texttt{UPDATE},\texttt{DELETE},\texttt{NOOP}\}
+            \]
+          </div>
+          <p class="notation-note">
+            These operations create a new memory, revise an existing one, remove an outdated or contradictory one,
+            or leave the memory bank unchanged.
+          </p>
+          <p>
+            Recent work such as Memory-R1 turns the memory manager itself into a policy optimized by RL
+            <a class="citation" href="#ref-25">[25]</a>. Given an extracted memory and the old memory bank, the
+            manager chooses both an operation and the updated memory content:
+          </p>
+          <div class="equation">
+            \[
+              (o,m')
+              \sim
+              \pi_{\theta}(\cdot\mid x^{\mathrm{mem}},\mathcal{M}_{\mathrm{old}})
+            \]
+          </div>
+          <p class="notation-note">
+            Here, \(o\) is the selected memory operation and \(m'\) is the updated memory content. The reward can be
+            defined by downstream task performance, for example
+            \(R_{\mathrm{answer}}=\mathrm{EM}(y_{\mathrm{pred}},y_{\mathrm{gold}})\).
+          </p>
+          <p>
+            This avoids manually labeling every memory operation. If the updated memory helps the agent answer a
+            future task correctly, the memory manager receives positive feedback; if it hurts the downstream answer,
+            the operation is discouraged. The paper also notes a longer-horizon challenge: some memories may not be
+            useful immediately but can help future tasks, so memory construction itself can be formulated as a
+            sequential decision problem <a class="citation" href="#ref-26">[26]</a>.
           </p>
 
           <h3 id="skill-optimization">6.4.2 Skill Optimization</h3>
           <p>
-            Skill optimization turns repeated successful behaviors into reusable skills. Instead of treating every
-            task as independent, the agent maintains a skill library that can guide future planning and execution.
-            Successful trajectories provide skill principles, while failed trajectories provide lessons
-            <a class="citation" href="#ref-20">[20]</a>.
+            Skill optimization turns repeated successful behaviors into reusable skills. Compared with memory,
+            which stores concrete information from past interactions, a skill is a higher-level instruction package:
+            it can describe when to use a behavior, what workflow to follow, which tools are needed, and how to
+            verify the final result.
+          </p>
+          <aside class="callout">
+            <strong>Skill form.</strong>
+            In the paper's example, a reasoning skill contains a name, a task description, an explicit workflow,
+            tool choices, a verification checklist, and an output style. The point is not only remembering a past
+            trajectory, but abstracting it into a reusable procedure.
+          </aside>
+          <p>
+            During execution, the agent can be given descriptions of available skills and then select the ones most
+            relevant to the current task. The paper writes this retrieval step as:
+          </p>
+          <div class="equation">
+            \[
+              \mathcal{S}^{*}
+              =
+              \mathrm{TopK}_{s_i\in\mathcal{S}}\mathrm{Score}(x,s_i)
+            \]
+          </div>
+          <p class="notation-note">
+            \(\mathcal{S}\) is the skill bank, \(\mathrm{Score}(x,s_i)\) measures relevance between the task and a
+            skill, and \(\mathcal{S}^{*}\) is the selected skill set.
+          </p>
+          <p>
+            Manually writing skills can work, but the paper points out that skill quality depends heavily on human
+            design choices. A skill that looks well structured may still fail when another agent tries to use it.
+            SkillRL addresses this by optimizing skill generation according to whether the resulting skills improve
+            actual agent performance <a class="citation" href="#ref-27">[27]</a>.
           </p>
           <figure class="paper-figure">
             <img src="assets/figures/fig-skillrl.png" alt="Diagram illustrating SkillRL">
             <figcaption>Skill optimization converts collected trajectories into reusable skills for future RL training.</figcaption>
           </figure>
+          <div class="step-flow compact-flow cycle-flow" aria-label="SkillRL workflow">
+            <div><span>1</span><strong>Collect</strong><p>Gather successful and failed trajectories from environments.</p></div>
+            <div><span>2</span><strong>Abstract</strong><p>Extract reusable skills and initialize a skill bank.</p></div>
+            <div><span>3</span><strong>Guide</strong><p>Retrieve relevant skills to guide RL exploration and planning.</p></div>
+            <div><span>4</span><strong>Refine</strong><p>Use new trajectories to discover new skills or improve old ones.</p></div>
+          </div>
           <p>
-            This changes the role of RL. The objective is not only to improve the next action, but also to improve
-            the agent's long-term ability to organize experience. Skill learning, memory, and trajectory refinement
-            together make agentic RL closer to continual learning.
+            This creates a recursive loop. The skill bank gives the agent high-level behavioral priors for RL
+            training, while the improved agent generates better trajectories that further refine the skill bank. In
+            this sense, skill optimization compresses low-level interaction experience into reusable capabilities
+            that can transfer across tasks.
           </p>
+
+          <h3 id="trajectory-refinement">6.4.3 Trajectory Refinement</h3>
+          <p>
+            Trajectory refinement uses feedback from an attempted solution to revise the agent's later behavior.
+            Unlike memory management and skill optimization, which store or abstract experience for future tasks,
+            refinement directly edits the current or next trajectory. This is especially natural for agents because
+            tool execution results and environment states provide feedback during the interaction itself.
+          </p>
+          <div class="revision-flow" aria-label="Trajectory refinement workflow">
+            <div><strong>Task</strong><p>Start from a problem or environment goal.</p></div>
+            <div><strong>Initial Trajectory</strong><p>Generate the first reasoning, planning, or tool-use attempt.</p></div>
+            <div><strong>Feedback</strong><p>Receive a verifier, evaluator, tool, or environment signal.</p></div>
+            <div><strong>Reflection</strong><p>Turn the feedback into an error analysis or improvement strategy.</p></div>
+            <div><strong>Refined Trajectory</strong><p>Use the reflection to produce a better subsequent attempt.</p></div>
+          </div>
+          <p>
+            Reflexion is a representative prompting-based approach: the agent produces an initial trajectory,
+            receives evaluator feedback, writes a reflection, and uses that reflection in subsequent attempts
+            <a class="citation" href="#ref-20">[20]</a>. The paper connects this to step-level feedback as well:
+            outcome-level feedback may only say that the final answer failed, while step-level feedback can identify
+            where the trajectory went wrong and how the agent should revise it.
+          </p>
+          <p>
+            Prompt-based refinement is useful, but the paper notes two limitations. First, it depends on the
+            pretrained model's native ability to interpret feedback and revise its behavior. Second, it often helps
+            only the current interaction, without turning failed trajectories into transferable experience. Recent
+            work therefore trains agents to acquire refinement ability more explicitly, either through refinement
+            tuning or exploration-based trajectory optimization <a class="citation" href="#ref-28">[28]</a><a class="citation" href="#ref-29">[29]</a>.
+          </p>
+          <aside class="callout">
+            <strong>In-context policy improvement.</strong>
+            The paper frames trajectory refinement as close to in-context RL: the agent may not update model
+            parameters, but it updates its context with feedback and reflection, which changes later decisions
+            inside the same interaction.
+          </aside>
           <aside class="recap-card">
             <h3>Agentic Takeaway</h3>
             <p>
-              In agentic RL, the reward must explain more than whether the final answer was good. It should help the
-              agent learn which planning decisions, tool calls, memory updates, and refinements made the trajectory
-              succeed or fail.
+              Learning from agentic experience is not one mechanism. Memory keeps useful facts and episodes, skills
+              compress repeated trajectories into workflows, and refinement turns feedback into improved attempts.
+              Together, they let agents use experience as more than a static dataset.
             </p>
           </aside>
         </section>
@@ -1105,6 +1394,29 @@
             \(\tau_{\mathrm{dm}}=\{\mathbf{x}_T,\mathbf{x}_{T-1},\ldots,\mathbf{x}_0\}\) is treated as the
             trajectory optimized by RL.
           </p>
+          <div class="equation">
+            \[
+              \mathcal{L}_{\mathrm{dmrl}}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{z}\sim S_z,\,\tau_{\mathrm{dm}}\sim \mathrm{Pr}_{\theta}(\cdot)}
+              \left[
+                \sum_{t=0}^{T-1}
+                \log U_{\theta}(\mathbf{x}_{T-t-1}\mid\mathbf{x}_{T-t},\mathbf{z})
+                R_{\mathrm{dm}}(\mathbf{x}_0,\mathbf{z})
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            This follows the DPOK-style formulation in the paper: the reverse denoising process is treated as a
+            trajectory, and the final-image reward is used to optimize the log probability of its denoising steps
+            <a class="citation" href="#ref-22">[22]</a>.
+          </p>
+          <aside class="callout">
+            <strong>Foundation note.</strong>
+            The diffusion RL objective shown here is based on DPOK's denoising-trajectory view. Later diffusion RL
+            variants modify pieces such as KL regularization, reference-model sampling, or group-relative updates.
+          </aside>
           <p>
             Under this view, the reward on the final image can be used in a policy-gradient loss over the denoising
             trajectory <a class="citation" href="#ref-22">[22]</a>. This also allows techniques from LLM alignment
@@ -1170,6 +1482,44 @@
             stochasticity, \(R_{\mathrm{fm}}\) evaluates the final generated sample, and \(\hat{A}_i\) is computed
             from the relative reward of one trajectory within a sampled group.
           </p>
+          <div class="equation">
+            \[
+              \mathcal{L}_{\mathrm{fmgrpo}}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{z}\sim S_z,\,\tau_{\mathrm{fm}}\sim \mathrm{Pr}(\cdot)}
+              \frac{1}{G}
+              \sum_{i=1}^{G}
+              \left[
+                \frac{1}{T}
+                \sum_t
+                \min
+                \left(
+                  \frac{\mathrm{Pr}_{\theta}(a_t^i\mid s_t^i)}
+                       {\mathrm{Pr}_{\theta_{\mathrm{old}}}(a_t^i\mid s_t^i)}
+                  \hat{A}_i,
+                  \mathrm{clip}
+                  \left(
+                    \frac{\mathrm{Pr}_{\theta}(a_t^i\mid s_t^i)}
+                         {\mathrm{Pr}_{\theta_{\mathrm{old}}}(a_t^i\mid s_t^i)},
+                    1-\epsilon,
+                    1+\epsilon
+                  \right)
+                  \hat{A}_i
+                \right)
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            This objective is shown under the Flow-GRPO formulation: the deterministic flow is converted into a
+            stochastic MDP so that online RL can sample trajectories and compute transition probabilities
+            <a class="citation" href="#ref-23">[23]</a>.
+          </p>
+          <aside class="callout">
+            <strong>Foundation note.</strong>
+            The flow-matching RL objective shown here is based on Flow-GRPO. Later variants can change the
+            stochastic conversion, the reward normalization, or the PPO/GRPO-style update rule.
+          </aside>
           <p>
             This makes flow matching compatible with GRPO-style optimization. The model samples multiple generation
             trajectories for the same condition, evaluates each final sample, normalizes rewards within the group,
@@ -1291,6 +1641,11 @@
             <li id="ref-22">Ying Fan et al. DPOK: Reinforcement learning for fine-tuning text-to-image diffusion models. <em>NeurIPS 2023</em>, 2023.</li>
             <li id="ref-23">Jie Liu et al. Flow-GRPO: Training flow matching models via online RL. <em>NeurIPS 2025</em>, 2025.</li>
             <li id="ref-24">David Silver, Satinder Singh, Doina Precup, and Richard S. Sutton. Reward is enough. <em>Artificial Intelligence</em>, 2021.</li>
+            <li id="ref-25">Sikuan Yan et al. Memory-R1: Enhancing large language model agents to manage and utilize memories via reinforcement learning. <em>ACL 2026</em>, 2026.</li>
+            <li id="ref-26">Yu Wang et al. Mem-alpha: Learning memory construction via reinforcement learning, 2025.</li>
+            <li id="ref-27">Peng Xia et al. SkillRL: Evolving agents via recursive skill-augmented reinforcement learning, 2026.</li>
+            <li id="ref-28">Dayuan Fu et al. AgentRefine: Enhancing agent generalization through refinement tuning. <em>ICLR 2025</em>, 2025.</li>
+            <li id="ref-29">Yifan Song et al. Trial and error: Exploration-based trajectory optimization of LLM agents. <em>ACL 2024</em>, 2024.</li>
           </ol>
         </section>
 

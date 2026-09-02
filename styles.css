@@ -700,6 +700,87 @@ code {
   line-height: 1.48;
 }
 
+.stage-list,
+.revision-flow {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 30px;
+}
+
+.stage-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stage-list div {
+  padding: 16px 17px;
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-top: 3px solid var(--green);
+  border-radius: 8px;
+}
+
+.stage-list strong,
+.revision-flow strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.stage-list p,
+.revision-flow p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.stage-list span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cycle-flow div {
+  background: linear-gradient(180deg, #ffffff, var(--green-soft));
+  border-color: #cbded6;
+}
+
+.cycle-flow span {
+  background: var(--green);
+}
+
+.revision-flow {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  counter-reset: revision;
+}
+
+.revision-flow div {
+  position: relative;
+  padding: 15px 14px 16px;
+  background: linear-gradient(180deg, #ffffff, #fbfaf6);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  counter-increment: revision;
+}
+
+.revision-flow div::before {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  background: var(--gold);
+  border-radius: 6px;
+  content: counter(revision);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .concept-table {
   margin: 22px 0 28px;
   font-size: 0.95rem;
@@ -804,6 +885,63 @@ code {
   line-height: 0;
 }
 
+.derivation {
+  margin: 22px 0 27px;
+  padding: 18px 20px 20px;
+  overflow-x: auto;
+  background:
+    linear-gradient(90deg, rgba(138, 100, 34, 0.08), rgba(138, 100, 34, 0) 140px),
+    #ffffff;
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(31, 34, 37, 0.035);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.derivation-label {
+  margin: 0 0 14px;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.derivation .equation {
+  overflow-x: visible;
+  margin: 0;
+  padding: 9px 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 0.96rem;
+  text-align: center;
+}
+
+.derivation .equation + .equation {
+  margin-top: 7px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(201, 202, 198, 0.72);
+}
+
+.derivation .equation::before {
+  display: none;
+}
+
+.derivation p:not(.derivation-label) {
+  margin: 14px 0 0;
+  color: #3e4146;
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.compact-derivation {
+  margin-top: 18px;
+}
+
 .notation-note {
   margin: -8px 0 24px;
   color: var(--muted);
@@ -899,23 +1037,33 @@ code {
   line-height: 1.35;
 }
 
-.glossary-list dt a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: rgba(47, 92, 143, 0.28);
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
-}
-
-.glossary-list dt a:hover {
-  color: var(--accent);
-  text-decoration-color: currentColor;
-}
-
 .glossary-list dd {
   color: #34363a;
   line-height: 1.68;
   background: rgba(255, 255, 255, 0.72);
+}
+
+.reading-note {
+  margin: 8px 0 0;
+  color: var(--faint);
+  font-size: 0.82rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.reading-note span:first-child {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 780;
+}
+
+.reading-note .paper-title {
+  color: #4c5057;
+}
+
+.reading-note a {
+  font-style: normal;
+  font-weight: 700;
 }
 
 .glossary-list dt:has(+ dd:hover),
@@ -1102,7 +1250,9 @@ code {
   }
 
   .lesson-map,
-  .step-flow {
+  .step-flow,
+  .stage-list,
+  .revision-flow {
     grid-template-columns: 1fr;
   }
 
@@ -1127,6 +1277,22 @@ code {
     padding: 15px 14px 15px 17px;
     font-size: 0.96rem;
     text-align: left;
+  }
+
+  .derivation {
+    padding: 16px 15px 17px;
+  }
+
+  .derivation .equation {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .derivation .equation + .equation {
+    padding-top: 14px;
   }
 
   .glossary-list {

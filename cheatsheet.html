@@ -109,6 +109,34 @@
             Here, \(J(\theta)\) is the policy objective, \(\tau\) is a sampled trajectory, and \(R(\tau)\) is its
             cumulative reward.
           </p>
+          <div class="derivation compact-derivation">
+            <p class="derivation-label">LLM form in the paper</p>
+            <div class="equation">
+              \[
+                \begin{aligned}
+                  \frac{\partial J(\theta)}{\partial\theta}
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \frac{1}{d}
+                    \sum_{\mathbf{y}\in\mathcal{D}}
+                    \frac{\partial \log\mathrm{Pr}_{\theta}(\mathbf{y}\mid\mathbf{x})}{\partial\theta}
+                    R(\mathbf{y})
+                  \right] \\
+                  \frac{\partial J(\theta)}{\partial\theta}
+                  &=
+                  \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+                  \left[
+                    \frac{1}{d}
+                    \sum_{\mathbf{y}\in\mathcal{D}}
+                    \sum_{t=1}^{T}
+                    \frac{\partial \log \mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}{\partial\theta}
+                    \sum_{k=t}^{T}r_k
+                  \right]
+                \end{aligned}
+              \]
+            </div>
+          </div>
           <p>
             Increase the probability of sampled trajectories that receive high reward. The reward does not need to
             be differentiable.
@@ -212,7 +240,8 @@
           </p>
           <p>
             The penalty discourages the trained policy from moving too far away from the reference model. In RLHF,
-            this is central for preserving language quality while optimizing reward.
+            this is central for preserving language quality while optimizing reward. In PPO-style objectives,
+            \(\beta\) is the weight controlling the strength of this penalty.
           </p>
         </section>
 
@@ -235,6 +264,27 @@
             PPO limits policy updates by clipping the probability ratio. This helps prevent reward over-optimization
             and unstable policy drift.
           </p>
+          <div class="equation">
+            \[
+              \mathcal{L}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+              \mathbb{E}_{\mathbf{y}\sim\mathrm{Pr}_{\theta_{\mathrm{ref}}}(\cdot\mid\mathbf{x})}
+              \left[
+                \sum_{t=1}^{T}
+                \left(
+                  \mathrm{Clip}\left(
+                    \frac{\mathrm{Pr}_{\theta}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}
+                         {\mathrm{Pr}_{\theta_{\mathrm{ref}}}(y_t\mid\mathbf{x},\mathbf{y}_{&lt;t})}
+                    A_t
+                  \right)
+                  -
+                  \beta \mathrm{Penalty}_t
+                \right)
+              \right]
+            \]
+          </div>
         </section>
 
         <section class="cheat-item" id="reward-model">
@@ -295,6 +345,26 @@
             GRPO estimates advantage by comparing responses sampled for the same prompt. This can remove the need
             for a separate value model.
           </p>
+          <div class="equation">
+            \[
+              \mathcal{L}_{g}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{x}\sim\mathcal{S}_{x}}
+              \frac{1}{G}
+              \sum_{i=1}^{G}
+              \left[
+                \sum_{t=1}^{T}
+                \mathrm{Clip}\left(
+                  \frac{\mathrm{Pr}_{\theta}(y_{i,t}\mid\mathbf{x},\mathbf{y}_{i,&lt;t})}
+                       {\mathrm{Pr}_{\theta_{\mathrm{ref}}}(y_{i,t}\mid\mathbf{x},\mathbf{y}_{i,&lt;t})}
+                  A_{i,t}^{\mathrm{grpo}}
+                \right)
+                -
+                \beta \mathrm{Penalty}
+              \right]
+            \]
+          </div>
         </section>
 
         <section class="cheat-item" id="dpo">
@@ -369,7 +439,7 @@
 
         <section class="cheat-item" id="multimodal">
           <p class="chapter-number">Beyond text</p>
-          <h2>Diffusion Reward Objective</h2>
+          <h2>Multimodal Generation RL Objectives</h2>
           <div class="equation">
             \[
               \max_{\theta}
@@ -386,6 +456,55 @@
           <p>
             For image generation, the final sample can be scored by alignment, aesthetics, safety, or preference
             rewards, while the denoising process supplies the trajectory to optimize.
+          </p>
+          <div class="equation">
+            \[
+              \mathcal{L}_{\mathrm{dmrl}}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{z}\sim S_z,\,\tau_{\mathrm{dm}}\sim \mathrm{Pr}_{\theta}(\cdot)}
+              \left[
+                \sum_{t=0}^{T-1}
+                \log U_{\theta}(\mathbf{x}_{T-t-1}\mid\mathbf{x}_{T-t},\mathbf{z})
+                R_{\mathrm{dm}}(\mathbf{x}_0,\mathbf{z})
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            This follows the DPOK-style denoising-trajectory formulation used in the paper; later diffusion RL
+            variants may modify the regularization, reference model, or advantage estimator.
+          </p>
+          <div class="equation">
+            \[
+              \mathcal{L}_{\mathrm{fmgrpo}}(\theta)
+              =
+              -
+              \mathbb{E}_{\mathbf{z}\sim S_z,\,\tau_{\mathrm{fm}}\sim \mathrm{Pr}(\cdot)}
+              \frac{1}{G}
+              \sum_{i=1}^{G}
+              \left[
+                \frac{1}{T}
+                \sum_t
+                \min
+                \left(
+                  \frac{\mathrm{Pr}_{\theta}(a_t^i\mid s_t^i)}
+                       {\mathrm{Pr}_{\theta_{\mathrm{old}}}(a_t^i\mid s_t^i)}
+                  \hat{A}_i,
+                  \mathrm{clip}
+                  \left(
+                    \frac{\mathrm{Pr}_{\theta}(a_t^i\mid s_t^i)}
+                         {\mathrm{Pr}_{\theta_{\mathrm{old}}}(a_t^i\mid s_t^i)},
+                    1-\epsilon,
+                    1+\epsilon
+                  \right)
+                  \hat{A}_i
+                \right)
+              \right]
+            \]
+          </div>
+          <p class="notation-note">
+            This follows Flow-GRPO, where ODE-based flow matching is converted into a stochastic MDP for online RL;
+            later flow-matching RL variants may alter the stochastic conversion or the group-relative update.
           </p>
         </section>
 
