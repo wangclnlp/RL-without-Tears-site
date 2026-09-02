@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Glossary - RL without Tears</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">RL without Tears</a>
+      <nav class="topnav" aria-label="Primary navigation">
+        <a href="reader.html">Introduction</a>
+        <a href="cheatsheet.html">Cheat Sheet</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="index.html#cite">Cite</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Glossary navigation">
+        <nav>
+          <a href="#rl-core">RL Core</a>
+          <a href="#llm-rl">LLM RL</a>
+          <a href="#reward">Rewards</a>
+          <a href="#reasoning">Reasoning</a>
+          <a href="#agents">Agents</a>
+          <a href="#multimodal">Multimodal</a>
+        </nav>
+      </aside>
+
+      <article class="content reader-content">
+        <section class="reader-title">
+          <p class="kicker">Companion material</p>
+          <h1>Glossary</h1>
+          <p>
+            A concise glossary for readers who know LLMs but are still building intuition for reinforcement
+            learning terminology.
+            Click a linked term to open an external explanation, usually Wikipedia for general concepts and the
+            original or closely related paper for newer LLM-RL terms.
+          </p>
+        </section>
+
+        <section class="glossary-group" id="rl-core">
+          <h2>RL Core</h2>
+          <dl class="glossary-list">
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Agent</a></dt>
+            <dd>The learner or decision-maker in reinforcement learning. In LLM post-training, the agent is usually the language model itself, which generates outputs and updates its behavior from feedback.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Environment</a></dt>
+            <dd>The external process that receives actions and returns observations or rewards. It may be a reward model, verifier, simulator, tool system, or task environment.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">State</a></dt>
+            <dd>The information available when a decision is made. For LLMs, this is often the input prompt together with the previously generated tokens, which form the context for predicting the next token.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">Action</a></dt>
+            <dd>The decision made by the policy at a given state. In standard LLM generation, the action is naturally the next token; in agentic settings, it may be a tool call, argument string, or higher-level interaction step.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Policy</a></dt>
+            <dd>A distribution over actions conditioned on the current state. An LLM policy assigns probabilities to next tokens or, in agent settings, to higher-level actions such as tool use.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">Trajectory</a></dt>
+            <dd>A sequence of states and actions generated under a policy. In LLMs, a trajectory may be a completion, a reasoning trace, a denoising path, or a multi-turn agent interaction.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Return</a></dt>
+            <dd>The cumulative reward collected along a trajectory. It is the quantity the policy is ultimately trained to maximize, sometimes with future rewards discounted.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">Discount Factor</a></dt>
+            <dd>A coefficient that controls how much future rewards contribute to return. Smaller values emphasize near-term rewards, while larger values make later outcomes matter more.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Value Function</a></dt>
+            <dd>An estimate of expected future return from a state or state-action pair. In LLM RL, a value model is often used as a baseline for advantage estimation.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Actor%E2%80%93critic_algorithm" target="_blank" rel="noopener">Critic</a></dt>
+            <dd>A model that estimates values or advantages for policy optimization. In PPO-style LLM RL, it is often implemented as a value head attached to a language-model backbone and trained alongside the policy.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Advantage_actor-critic_algorithm" target="_blank" rel="noopener">Advantage</a></dt>
+            <dd>The difference between the value of an action and the expected value of the state. It tells the optimizer whether a sampled token or action is better or worse than the baseline behavior expected at that state.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Monte_Carlo_method" target="_blank" rel="noopener">Monte Carlo Estimate</a></dt>
+            <dd>An estimate computed from sampled complete trajectories. It uses observed returns directly, which can reduce bias but often creates high variance, especially for long LLM outputs.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Temporal_difference_learning" target="_blank" rel="noopener">Temporal Difference</a></dt>
+            <dd>An estimate that updates value or advantage using the next predicted value before the full trajectory is complete. It can reduce variance by bootstrapping from a value model, but may introduce bias.</dd>
+            <dt><a href="https://arxiv.org/abs/1506.02438" target="_blank" rel="noopener">GAE</a></dt>
+            <dd>Generalized Advantage Estimation. A recursive estimator that mixes temporal-difference residuals across future steps, controlled by discount and smoothing parameters to balance bias and variance.</dd>
+          </dl>
+        </section>
+
+        <section class="glossary-group" id="llm-rl">
+          <h2>LLM RL</h2>
+          <dl class="glossary-list">
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">RLHF</a></dt>
+            <dd>Reinforcement learning from human feedback. Human preference data is commonly used to train a reward model, which then provides feedback for optimizing the policy.</dd>
+            <dt><a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">RLAIF</a></dt>
+            <dd>Reinforcement learning from AI feedback. Instead of relying only on human annotations, AI systems provide preference labels, critiques, scores, or rewards to scale feedback collection.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">Reference Policy</a></dt>
+            <dd>A fixed or slowly updated policy used to regularize the trained model. It keeps the optimized policy close to a trusted behavior region and helps prevent excessive drift.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence" target="_blank" rel="noopener">KL Penalty</a></dt>
+            <dd>A penalty based on the distance between the trained policy and the reference policy. In RLHF, it helps preserve language quality while the model optimizes reward.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">Policy Drift</a></dt>
+            <dd>The movement of the trained policy away from the reference or data-generating policy. Too much drift can harm language quality, reduce stability, or encourage reward exploitation.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search" target="_blank" rel="noopener">Rollout</a></dt>
+            <dd>A sampled output or interaction trajectory generated by a policy. In LLM RL, rollouts provide the behaviors that are scored by rewards and then used for policy updates.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">On-policy</a></dt>
+            <dd>Training with samples generated by the current policy or a very recent version of it. This reduces mismatch between the data distribution and the policy being optimized.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Off-policy_learning" target="_blank" rel="noopener">Off-policy</a></dt>
+            <dd>Training with samples generated by a different policy. Because the samples may no longer match the current policy, methods such as importance sampling are often needed.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Proximal_policy_optimization" target="_blank" rel="noopener">PPO</a></dt>
+            <dd>Proximal Policy Optimization. A policy-gradient method that stabilizes updates by clipping probability ratios, making it a common choice for PPO-style RLHF pipelines.</dd>
+            <dt><a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">GRPO</a></dt>
+            <dd>Group Relative Policy Optimization. A method that estimates relative advantages among multiple responses sampled for the same prompt, avoiding the need for a separate value model.</dd>
+            <dt><a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">Group-relative Advantage</a></dt>
+            <dd>An advantage estimate computed by comparing each response with other responses sampled for the same prompt. The group reward distribution acts as a natural baseline.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">DPO</a></dt>
+            <dd>Direct Preference Optimization. A preference learning method that trains the policy directly from chosen and rejected responses, without explicitly training a separate reward model in the basic pipeline.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">Implicit Reward</a></dt>
+            <dd>The log-probability-ratio reward induced by direct preference methods such as DPO. It replaces an explicit learned reward model with a reward implied by policy and reference-model likelihoods.</dd>
+          </dl>
+        </section>
+
+        <section class="glossary-group" id="reward">
+          <h2>Rewards</h2>
+          <dl class="glossary-list">
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">Reward Model</a></dt>
+            <dd>A model that maps an input-output pair to a scalar score. It can be used to rank responses, select the best candidate, or provide reward signals for policy optimization.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">Preference Pair</a></dt>
+            <dd>A pair of candidate responses where one is labeled preferred over the other. Pairwise preference data is often easier to collect than reliable absolute numerical scores.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Outcome Reward</a></dt>
+            <dd>A reward assigned to the final output or final task result. It is simple and useful when correctness can be verified at the end, but can be sparse for long reasoning chains.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Process Reward</a></dt>
+            <dd>A reward assigned to intermediate reasoning steps or subgoals. It provides denser feedback than an outcome reward and can help with credit assignment in long trajectories.</dd>
+            <dt><a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">Rule-based Reward</a></dt>
+            <dd>A reward computed by deterministic checks such as exact answer matching, unit tests, formatting rules, or program execution. These rewards can be especially stable when the desired behavior is verifiable.</dd>
+            <dt><a href="https://aclanthology.org/2026.acl-long.791/" target="_blank" rel="noopener">Rubric Reward</a></dt>
+            <dd>A reward produced by evaluating responses against explicit criteria such as correctness, clarity, safety, or completeness. Rubrics make the evaluation dimensions more transparent than a single opaque preference label.</dd>
+            <dt><a href="https://arxiv.org/abs/2410.12832" target="_blank" rel="noopener">Generative Reward Model</a></dt>
+            <dd>A reward model that frames judgment as generation, such as predicting a preference label or explanation token with an LLM. This lets the reward model reuse instruction-following and reasoning abilities.</dd>
+            <dt><a href="https://arxiv.org/abs/2403.13787" target="_blank" rel="noopener">Reward Generalization</a></dt>
+            <dd>The ability of a reward model or reward rule to remain reliable when the policy generates outputs outside the original training distribution. It matters because policy optimization can quickly move into new behavior regions.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reward_shaping" target="_blank" rel="noopener">Reward Shaping</a></dt>
+            <dd>The practice of adding intermediate or auxiliary rewards to make learning easier. In LLM reasoning or agent tasks, shaping can provide feedback before the final answer or task outcome is known.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reward_shaping" target="_blank" rel="noopener">Potential-based Shaping</a></dt>
+            <dd>A form of reward shaping that adds differences of a potential function. Its appeal is that it can provide intermediate feedback while preserving the intended optimal policy under suitable conditions.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reward_hacking" target="_blank" rel="noopener">Reward Hacking</a></dt>
+            <dd>A failure mode where the policy exploits flaws in the reward instead of improving the intended behavior. It is especially concerning when the reward model is easier to game than the real goal is to satisfy.</dd>
+            <dt><a href="https://arxiv.org/abs/2210.10760" target="_blank" rel="noopener">Overoptimization</a></dt>
+            <dd>A failure mode where continued optimization improves reward-model score but degrades the true intended quality. In preference learning, this can happen when the policy learns artifacts of the reward model or dataset.</dd>
+          </dl>
+        </section>
+
+        <section class="glossary-group" id="reasoning">
+          <h2>Reasoning</h2>
+          <dl class="glossary-list">
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Verifier</a></dt>
+            <dd>A system that checks whether an answer, program, proof, or intermediate step is correct. In reasoning RL, verifiers provide more objective feedback than open-ended preference judgments when correctness can be checked.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback" target="_blank" rel="noopener">Best-of-N</a></dt>
+            <dd>A test-time method that samples N candidate outputs and selects the best according to a reward model or verifier. It can also motivate rejection sampling, where selected outputs are reused for training.</dd>
+            <dt><a href="https://arxiv.org/abs/2408.03314" target="_blank" rel="noopener">Test-time Scaling</a></dt>
+            <dd>Improving inference by spending more computation on sampling, search, verification, or selection rather than changing model weights. In reasoning tasks, this can help uncover stronger reasoning paths at inference time.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Process Reward Model</a></dt>
+            <dd>A reward model that evaluates intermediate steps rather than only the final answer. It is useful when final-answer rewards are too sparse to show where a reasoning path begins to fail.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Outcome Reward Model</a></dt>
+            <dd>A model or rule that evaluates only the final answer or final task outcome. It is often cheaper to define, but may provide limited guidance for long reasoning or agent trajectories.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search" target="_blank" rel="noopener">MCTS</a></dt>
+            <dd>Monte Carlo Tree Search. A search method that explores possible reasoning paths through selection, expansion, simulation, and backpropagation, using verifier or reward feedback to guide exploration.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search#Exploration_and_exploitation" target="_blank" rel="noopener">UCT</a></dt>
+            <dd>Upper Confidence bounds applied to Trees. A selection rule in MCTS that balances exploiting high-reward paths with exploring under-visited reasoning steps.</dd>
+            <dt><a href="https://openreview.net/forum?id=3zKtaqxLhW" target="_blank" rel="noopener">On-policy Distillation</a></dt>
+            <dd>A method where the student samples from its current policy and receives teacher distributional supervision at the states it actually visits. This reduces mismatch compared with offline distillation from teacher-generated trajectories.</dd>
+          </dl>
+        </section>
+
+        <section class="glossary-group" id="agents">
+          <h2>Agents</h2>
+          <dl class="glossary-list">
+            <dt>Agentic RL</dt>
+            <dd>RL for models that learn through multi-step interaction with tools, environments, memory, and observations. The focus shifts from optimizing a single response to optimizing long-horizon decisions and task outcomes.</dd>
+            <dt><a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener">Tool Use</a></dt>
+            <dd>The ability to call external systems such as search, APIs, code interpreters, or databases. In agentic RL, the model can be rewarded for using tools correctly, efficiently, and only when they help the task.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Credit_assignment_problem" target="_blank" rel="noopener">Credit Assignment</a></dt>
+            <dd>The problem of deciding which earlier decisions caused a delayed success or failure. It becomes harder in agent tasks because planning choices, tool calls, and observations may affect the final outcome many steps later.</dd>
+            <dt><a href="https://aclanthology.org/2026.acl-long.583/" target="_blank" rel="noopener">Memory Management</a></dt>
+            <dd>The process of storing, updating, deleting, and retrieving useful information from past interactions. RL can train memory operations by rewarding future task success after a memory is used.</dd>
+            <dt><a href="https://arxiv.org/abs/2602.08234" target="_blank" rel="noopener">Skill Optimization</a></dt>
+            <dd>The process of converting repeated successful behavior into reusable skills for future tasks. Skills can serve as high-level behavioral priors that guide later planning and RL exploration.</dd>
+            <dt><a href="https://arxiv.org/abs/2408.00764" target="_blank" rel="noopener">Environment Synthesis</a></dt>
+            <dd>The construction or generation of interactive tasks that provide observations, actions, and rewards for agent training. Good environments expose weaknesses in the current policy and create useful interaction data.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener">Trajectory-level Reward</a></dt>
+            <dd>A reward assigned to the whole interaction trajectory, often based on final task success. It is natural for agent tasks, but can be too coarse to explain which intermediate decision mattered.</dd>
+            <dt><a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">Step-level Reward</a></dt>
+            <dd>A reward assigned to an intermediate plan, tool call, observation response, or subgoal. It supports finer credit assignment when the final trajectory contains many decisions.</dd>
+            <dt><a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">State-based Reward</a></dt>
+            <dd>A reward computed by checking the final environment state against a task goal, such as whether a database or file system changed correctly. This can be more reliable than judging only the text of the final answer.</dd>
+            <dt><a href="http://papers.nips.cc/paper_files/paper/2025/hash/97c5b2707228e7e3fb67e4ecc2e0e607-Abstract-Conference.html" target="_blank" rel="noopener">Tool Cost</a></dt>
+            <dd>A penalty for unnecessary or expensive tool use, such as latency, API cost, extra calls, or computation. It encourages agents to balance tool benefit against interaction cost.</dd>
+          </dl>
+        </section>
+
+        <section class="glossary-group" id="multimodal">
+          <h2>Multimodal</h2>
+          <dl class="glossary-list">
+            <dt><a href="https://doi.org/10.1609/aaai.v39i24.34721" target="_blank" rel="noopener">Visual Reward Model</a></dt>
+            <dd>A reward model that evaluates text responses or generated content with respect to visual inputs, prompts, or visual preferences. It extends RLHF-style feedback to settings where the model must understand images as well as language.</dd>
+            <dt><a href="https://arxiv.org/abs/2302.12192" target="_blank" rel="noopener">Diffusion RL</a></dt>
+            <dd>Reward optimization for diffusion generators, where the denoising process is treated as a trajectory and the final sample receives reward. This lets image generators optimize criteria such as prompt satisfaction or human preference.</dd>
+            <dt><a href="https://arxiv.org/abs/2505.05470" target="_blank" rel="noopener">Flow Matching RL</a></dt>
+            <dd>Reward optimization for flow matching models, often by discretizing the continuous generation path into decision steps. Stochastic sampling can be introduced so policy-gradient or GRPO-style methods can explore trajectories.</dd>
+          </dl>
+        </section>
+
+        <nav class="reader-footer" aria-label="Glossary footer">
+          <a href="reader.html">Read the introduction</a>
+          <a href="cheatsheet.html">Open cheat sheet</a>
+        </nav>
+      </article>
+    </main>
+  </body>
+</html>

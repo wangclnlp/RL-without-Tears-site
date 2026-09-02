@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Reinforcement Learning without Tears: an introduction to reinforcement learning in the era of large language models."
+    >
+    <title>RL without Tears</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">RL without Tears</a>
+      <nav class="topnav" aria-label="Primary navigation">
+        <a href="reader.html">Introduction</a>
+        <a href="cheatsheet.html">Cheat Sheet</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="#chapters">Chapters</a>
+        <a href="#materials">Materials</a>
+        <a href="#cite">Cite</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Page navigation">
+        <nav>
+          <a href="#abstract">Abstract</a>
+          <a href="#chapters">Chapters</a>
+          <a href="#materials">Materials</a>
+          <a href="#ecosystem">Ecosystem</a>
+          <a href="#cite">Citation</a>
+        </nav>
+      </aside>
+
+      <article class="content">
+        <section class="book-hero">
+          <p class="kicker">Companion site &middot; September 2026</p>
+          <h1>Reinforcement Learning without Tears</h1>
+          <p class="subtitle">An Introduction in the Era of Large Language Models</p>
+          <p class="authors">Chenglong Wang &middot; Hang Zhou &middot; Tongran Liu &middot; Jingbo Zhu &middot; Tong Xiao</p>
+          <div class="action-row" aria-label="Main links">
+            <a href="reader.html">Read online</a>
+            <a href="assets/rl-without-tears.pdf">Download PDF</a>
+            <a href="#cite">BibTeX</a>
+          </div>
+          <div class="topic-pills" aria-label="Covered topics">
+            <span>RLHF</span>
+            <span>Reward Modeling</span>
+            <span>Reasoning RL</span>
+            <span>Agentic RL</span>
+            <span>Multimodal RL</span>
+          </div>
+        </section>
+
+        <section class="block" id="abstract">
+          <h2>Abstract</h2>
+          <p class="lead">
+            Reinforcement learning has become a practical language for modern LLM research: aligning models with
+            preferences, improving reasoning, training agents through interaction, and optimizing multimodal
+            systems. This introduction presents RL from the perspective of LLMs rather than robotics or classical
+            control, using prompts, tokens, rewards, verifiers, preference data, and trajectories as the central
+            objects.
+          </p>
+          <p>
+            The goal of this site is to make the paper easier to read and revisit. Readers can start with the
+            online chapters, use the formula notes as a quick reference, and browse systems and datasets connected
+            to the paper's discussion.
+          </p>
+        </section>
+
+        <section class="block" id="chapters">
+          <h2>Chapters</h2>
+          <ol class="chapter-list">
+            <li>
+              <a href="reader.html#introduction">Introduction</a>
+              <p>Motivates why RL has become important for LLM alignment, reasoning, agents, and multimodal models.</p>
+            </li>
+            <li>
+              <a href="reader.html#preliminaries">Preliminaries: LLMs and RL</a>
+              <p>Maps agents, states, actions, policies, rewards, and trajectories to LLM training.</p>
+            </li>
+            <li>
+              <a href="reader.html#rl-training">RL Training for LLMs</a>
+              <p>Builds the path from policy gradient to advantage estimation, importance sampling, and PPO.</p>
+            </li>
+            <li>
+              <a href="reader.html#improved-rl">Improved Reinforcement Learning for LLMs</a>
+              <p>Explains advanced reward construction, advantage estimation, efficient RL methods, and direct preference optimization.</p>
+            </li>
+            <li>
+              <a href="reader.html#reasoning">RL for Reasoning</a>
+              <p>Connects verifiers, process rewards, search, iterative RL, large-scale RL, and on-policy distillation.</p>
+            </li>
+            <li>
+              <a href="reader.html#agents">Agentic Reinforcement Learning</a>
+              <p>Studies planning, tool use, environment design, credit assignment, memory, skills, and refinement.</p>
+            </li>
+            <li>
+              <a href="reader.html#multimodal">Multimodal Reinforcement Learning</a>
+              <p>Introduces visual reward models and RL for multimodal understanding and generation.</p>
+            </li>
+            <li>
+              <a href="reader.html#conclusion">Conclusions and Future Directions</a>
+              <p>Summarizes the paper and highlights RL for pre-training, efficient training, scaling limits, and continual self-evolving RL.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="block" id="materials">
+          <h2>Companion Materials</h2>
+          <div class="material-grid">
+            <a class="material" href="reader.html">
+              <span>Online Introduction</span>
+              <p>An expanded HTML reading path with section summaries, formulas, references, and selected figures from the paper.</p>
+            </a>
+            <a class="material" href="assets/rl-without-tears.pdf">
+              <span>Paper PDF</span>
+              <p>The complete paper with full derivations, figures, tables, and references.</p>
+            </a>
+            <a class="material" href="reader.html#rl-training">
+              <span>Formula Notes</span>
+              <p>Policy gradient, advantage, PPO, GRPO, and reward-model losses.</p>
+            </a>
+            <a class="material" href="cheatsheet.html">
+              <span>Formula Cheat Sheet</span>
+              <p>A one-page reference for the core objectives and estimators.</p>
+            </a>
+            <a class="material" href="glossary.html">
+              <span>Glossary</span>
+              <p>Short definitions for RL, reward modeling, reasoning, and agent terminology.</p>
+            </a>
+            <a class="material" href="#ecosystem">
+              <span>Systems & Datasets</span>
+              <p>A compact starting point for frameworks, preference data, reasoning data, and agent environments.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="block" id="ecosystem">
+          <h2>Ecosystem</h2>
+          <p>
+            This section highlights systems and datasets emphasized in the introduction. It gives readers a compact
+            starting point for connecting the paper's concepts to practical RL post-training resources.
+          </p>
+
+          <h3>Systems</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Scope</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://github.com/huggingface/trl">TRL</a></td><td>Reward modeling, PPO, GRPO, RLOO, DPO, KTO, ORPO, Online-DPO.</td></tr>
+              <tr><td><a href="https://github.com/OpenRLHF/OpenRLHF">OpenRLHF</a></td><td>SFT, reward modeling, PPO-family methods, preference optimization, and multi-turn executors.</td></tr>
+              <tr><td><a href="https://github.com/verl-project/verl">verl</a></td><td>PPO, GRPO, GSPO, ReMax, REINFORCE++, RLOO, DAPO, and tool calling.</td></tr>
+              <tr><td><a href="https://github.com/langfengQ/verl-agent">verl-agent</a></td><td>Long-horizon LLM/VLM agent training.</td></tr>
+              <tr><td><a href="https://github.com/modelscope/ms-swift">ms-swift</a></td><td>Pre-training, SFT, RM, PPO, GRPO, DPO, KTO, ORPO, and tool-use training.</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Datasets and Environments</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">Anthropic/hh-rlhf</a></td><td>Human preference reward modeling.</td></tr>
+              <tr><td><a href="https://huggingface.co/datasets/openbmb/UltraFeedback">UltraFeedback</a></td><td>AI feedback with scores, critiques, and pairs.</td></tr>
+              <tr><td><a href="https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2">MMPR-v1.2</a></td><td>Multimodal reasoning preference data.</td></tr>
+              <tr><td><a href="https://huggingface.co/datasets/open-r1/OpenR1-Math-220k">OpenR1-Math-220k</a></td><td>Math reasoning traces with verifier or judge signals.</td></tr>
+              <tr><td><a href="https://huggingface.co/datasets/AgentGym/AgentGym-RL-Data-ID">AgentGym-RL-Data</a></td><td>Multi-turn agent reward data.</td></tr>
+              <tr><td><a href="https://github.com/princeton-nlp/WebShop">WebShop</a></td><td>Web shopping environment reward.</td></tr>
+              <tr><td><a href="https://github.com/OpenBMB/ToolBench">ToolBench</a></td><td>API execution and tool-use trajectories.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="block" id="cite">
+          <h2>Citation</h2>
+          <pre><code>@misc{wang2026rlwithouttears,
+  title  = {Reinforcement Learning without Tears: An Introduction in the Era of Large Language Models},
+  author = {Chenglong Wang and Hang Zhou and Tongran Liu and Jingbo Zhu and Tong Xiao},
+  year   = {2026},
+  note   = {Companion site}
+}</code></pre>
+        </section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <span>Copyright 2026 Wang, Zhou, Liu, Zhu, and Xiao. CC-BY 4.0.</span>
+      <a href="reader.html">Read online</a>
+    </footer>
+  </body>
+</html>
