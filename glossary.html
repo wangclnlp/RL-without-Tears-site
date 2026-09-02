@@ -40,6 +40,11 @@
             learning terminology. Selected terms include recommended readings on the right, usually the origin
             paper for a method or a compact reference page for general concepts.
           </p>
+          <p>
+            For each term, we list a small set of selected references. The literature is far too large for this
+            page to serve as a complete survey, so these readings are meant as quick entry points into the main
+            ideas and issues rather than an exhaustive bibliography.
+          </p>
         </section>
 
         <section class="glossary-group" id="rl-core">
@@ -54,7 +59,7 @@
             <dt>Action</dt>
             <dd>The decision made by the policy at a given state. In standard LLM generation, the action is naturally the next token; in agentic settings, it may be a tool call, argument string, or higher-level interaction step.</dd>
             <dt>Policy</dt>
-            <dd>A distribution over actions conditioned on the current state. An LLM policy assigns probabilities to next tokens or, in agent settings, to higher-level actions such as tool use.<p class="reading-note"><span>[1]</span> <span class="paper-title">Reinforcement Learning: An Introduction</span> MIT Press 2018 <a href="https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf" target="_blank" rel="noopener">book</a>, Richard S. Sutton, Andrew G. Barto</p></dd>
+            <dd>A distribution over actions conditioned on the current state. An LLM policy assigns probabilities to next tokens or, in agent settings, to higher-level actions such as tool use.
             <dt>Trajectory</dt>
             <dd>A sequence of states and actions generated under a policy. In LLMs, a trajectory may be a completion, a reasoning trace, a denoising path, or a multi-turn agent interaction.</dd>
             <dt>Return</dt>
@@ -62,11 +67,11 @@
             <dt>Discount Factor</dt>
             <dd>A coefficient that controls how much future rewards contribute to return. Smaller values emphasize near-term rewards, while larger values make later outcomes matter more.<p class="reading-note"><span>[1]</span> <span class="paper-title">Markov Decision Process</span> Wiki <a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">wiki</a></p></dd>
             <dt>Value Function</dt>
-            <dd>An estimate of expected future return from a state or state-action pair. In LLM RL, a value model is often used as a baseline for advantage estimation.</dd>
+            <dd>An estimate of expected future return from a state or state-action pair. In LLM RL, a value model is often used as a baseline for advantage estimation.<p class="reading-note"><span>[1]</span> <span class="paper-title">Reinforcement Learning: An Introduction</span> MIT Press 2018 <a href="http://incompleteideas.net/book/the-book-2nd.html" target="_blank" rel="noopener">book</a>, Richard S. Sutton, Andrew G. Barto.</p></dd>
             <dt>Critic</dt>
-            <dd>A model that estimates values or advantages for policy optimization. In PPO-style LLM RL, it is often implemented as a value head attached to a language-model backbone and trained alongside the policy.</dd>
+            <dd>A model that estimates values or advantages for policy optimization. In PPO-style LLM RL, it is often implemented as a value head attached to a language-model backbone and trained alongside the policy.<p class="reading-note"><span>[1]</span> <span class="paper-title">Actor-Critic Algorithms</span> NeurIPS 1999 <a href="https://proceedings.neurips.cc/paper_files/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf" target="_blank" rel="noopener">paper</a>, Vijay R. Konda, John N. Tsitsiklis.</p></dd>
             <dt>Advantage</dt>
-            <dd>The difference between the value of an action and the expected value of the state. It tells the optimizer whether a sampled token or action is better or worse than the baseline behavior expected at that state.</dd>
+            <dd>The difference between the value of an action and the expected value of the state. It tells the optimizer whether a sampled token or action is better or worse than the baseline behavior expected at that state.<p class="reading-note"><span>[1]</span> <span class="paper-title">Policy Gradient Methods for Reinforcement Learning with Function Approximation</span> NeurIPS 1999 <a href="https://proceedings.neurips.cc/paper_files/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf" target="_blank" rel="noopener">paper</a>, Richard S. Sutton, David McAllester et al.</p></dd>
             <dt>Monte Carlo Estimate</dt>
             <dd>An estimate computed from sampled complete trajectories. It uses observed returns directly, which can reduce bias but often creates high variance, especially for long LLM outputs.</dd>
             <dt>Temporal Difference</dt>
@@ -80,9 +85,9 @@
           <h2>LLM RL</h2>
           <dl class="glossary-list">
             <dt>RLHF</dt>
-            <dd>Reinforcement learning from human feedback. Human preference data is commonly used to train a reward model, which then provides feedback for optimizing the policy.<p class="reading-note"><span>[1]</span> <span class="paper-title">Deep Reinforcement Learning from Human Preferences</span> NeurIPS 2017 <a href="https://arxiv.org/abs/1706.03741" target="_blank" rel="noopener">paper</a>, Paul F. Christiano, Jan Leike et al.</p></dd>
+            <dd>Reinforcement learning from human feedback. Human preference data is commonly used to train a reward model, which then provides feedback for optimizing the policy.<p class="reading-note"><span>[1]</span> <span class="paper-title">Deep Reinforcement Learning from Human Preferences</span> NeurIPS 2017 <a href="https://arxiv.org/abs/1706.03741" target="_blank" rel="noopener">paper</a>, Paul F. Christiano, Jan Leike et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">Learning to Summarize from Human Feedback</span> NeurIPS 2020 <a href="https://arxiv.org/abs/2009.01325" target="_blank" rel="noopener">paper</a>, Nisan Stiennon, Long Ouyang et al.</p><p class="reading-note"><span>[3]</span> <span class="paper-title">Training Language Models to Follow Instructions with Human Feedback</span> NeurIPS 2022 <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">paper</a>, Long Ouyang, Jeffrey Wu et al.</p></dd>
             <dt>RLAIF</dt>
-            <dd>Reinforcement learning from AI feedback. Instead of relying only on human annotations, AI systems provide preference labels, critiques, scores, or rewards to scale feedback collection.</dd>
+            <dd>Reinforcement learning from AI feedback. Instead of relying only on human annotations, AI systems provide preference labels, critiques, scores, or rewards to scale feedback collection.<p class="reading-note"><span>[1]</span> <span class="paper-title">RLAIF vs. RLHF: Scaling Reinforcement Learning from Human Feedback with AI Feedback</span> arXiv 2023 <a href="https://arxiv.org/abs/2309.00267" target="_blank" rel="noopener">paper</a>, Harrison Lee, Samrat Phatale et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">Constitutional AI: Harmlessness from AI Feedback</span> arXiv 2022 <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">paper</a>, Yuntao Bai, Saurav Kadavath et al.</p></dd>
             <dt>Reference Policy</dt>
             <dd>A fixed or slowly updated policy used to regularize the trained model. It keeps the optimized policy close to a trusted behavior region and helps prevent excessive drift.</dd>
             <dt>KL Penalty</dt>
@@ -100,11 +105,11 @@
             <dt>GRPO</dt>
             <dd>Group Relative Policy Optimization. A method that estimates relative advantages among multiple responses sampled for the same prompt, avoiding the need for a separate value model.<p class="reading-note"><span>[1]</span> <span class="paper-title">DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</span> arXiv 2024 <a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">paper</a>, Zhihong Shao, Peiyi Wang et al.</p></dd>
             <dt>Group-relative Advantage</dt>
-            <dd>An advantage estimate computed by comparing each response with other responses sampled for the same prompt. The group reward distribution acts as a natural baseline.</dd>
+            <dd>An advantage estimate computed by comparing each response with other responses sampled for the same prompt. The group reward distribution acts as a natural baseline.<p class="reading-note"><span>[1]</span> <span class="paper-title">DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</span> arXiv 2024 <a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">paper</a>, Zhihong Shao, Peiyi Wang et al.</p></dd>
             <dt>DPO</dt>
             <dd>Direct Preference Optimization. A preference learning method that trains the policy directly from chosen and rejected responses, without explicitly training a separate reward model in the basic pipeline.<p class="reading-note"><span>[1]</span> <span class="paper-title">Direct Preference Optimization: Your Language Model is Secretly a Reward Model</span> NeurIPS 2023 <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">paper</a>, Rafael Rafailov, Archit Sharma et al.</p></dd>
             <dt>Implicit Reward</dt>
-            <dd>The log-probability-ratio reward induced by direct preference methods such as DPO. It replaces an explicit learned reward model with a reward implied by policy and reference-model likelihoods.</dd>
+            <dd>The log-probability-ratio reward induced by direct preference methods such as DPO. It replaces an explicit learned reward model with a reward implied by policy and reference-model likelihoods.<p class="reading-note"><span>[1]</span> <span class="paper-title">A General Theoretical Paradigm to Understand Learning from Human Preferences</span> AISTATS 2024 <a href="https://arxiv.org/abs/2310.12036" target="_blank" rel="noopener">paper</a>, Mohammad Gheshlaghi Azar, Mark Rowland et al.</p></dd>
           </dl>
         </section>
 
@@ -112,7 +117,7 @@
           <h2>Rewards</h2>
           <dl class="glossary-list">
             <dt>Reward Model</dt>
-            <dd>A model that maps an input-output pair to a scalar score. It can be used to rank responses, select the best candidate, or provide reward signals for policy optimization.</dd>
+            <dd>A model that maps an input-output pair to a scalar score. It can be used to rank responses, select the best candidate, or provide reward signals for policy optimization.<p class="reading-note"><span>[1]</span> <span class="paper-title">Learning to Summarize from Human Feedback</span> NeurIPS 2020 <a href="https://arxiv.org/abs/2009.01325" target="_blank" rel="noopener">paper</a>, Nisan Stiennon, Long Ouyang et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback</span> arXiv 2022 <a href="https://arxiv.org/abs/2204.05862" target="_blank" rel="noopener">paper</a>, Yuntao Bai, Andy Jones et al.</p></dd>
             <dt>Preference Pair</dt>
             <dd>A pair of candidate responses where one is labeled preferred over the other. Pairwise preference data is often easier to collect than reliable absolute numerical scores.</dd>
             <dt>Outcome Reward</dt>
@@ -124,17 +129,17 @@
             <dt>Rubric Reward</dt>
             <dd>A reward produced by evaluating responses against explicit criteria such as correctness, clarity, safety, or completeness. Rubrics make the evaluation dimensions more transparent than a single opaque preference label.</dd>
             <dt>Generative Reward Model</dt>
-            <dd>A reward model that frames judgment as generation, such as predicting a preference label or explanation token with an LLM. This lets the reward model reuse instruction-following and reasoning abilities.</dd>
+            <dd>A reward model that frames judgment as generation, such as predicting a preference label or explanation token with an LLM. This lets the reward model reuse instruction-following and reasoning abilities.<p class="reading-note"><span>[1]</span> <span class="paper-title">Generative Reward Models</span> arXiv 2024 <a href="https://arxiv.org/abs/2410.12832" target="_blank" rel="noopener">paper</a>, Dakota Mahan, Duy Van Phung et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">GRAM-R<sup>2</sup>: Self-Training Generative Foundation Reward Models for Reward Reasoning</span> arXiv 2025 <a href="https://arxiv.org/abs/2509.02492" target="_blank" rel="noopener">paper</a>, Chenglong Wang, Yongyu Mu et al.</p></dd>
             <dt>Reward Generalization</dt>
-            <dd>The ability of a reward model or reward rule to remain reliable when the policy generates outputs outside the original training distribution. It matters because policy optimization can quickly move into new behavior regions.</dd>
+            <dd>The ability of a reward model or reward rule to remain reliable when the policy generates outputs outside the original training distribution. It matters because policy optimization can quickly move into new behavior regions.<p class="reading-note"><span>[1]</span> <span class="paper-title">Regularizing Hidden States Enables Learning Generalizable Reward Model for LLMs</span> NeurIPS 2024 <a href="https://arxiv.org/abs/2406.10216" target="_blank" rel="noopener">paper</a>, Rui Yang, Ruomeng Ding et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">GRAM: A Generative Foundation Reward Model for Reward Generalization</span> ICML 2025 <a href="https://arxiv.org/abs/2506.14175" target="_blank" rel="noopener">paper</a>, Chenglong Wang, Yang Gan et al.</p></dd>
             <dt>Reward Shaping</dt>
-            <dd>The practice of adding intermediate or auxiliary rewards to make learning easier. In LLM reasoning or agent tasks, shaping can provide feedback before the final answer or task outcome is known.</dd>
+            <dd>The practice of adding intermediate or auxiliary rewards to make learning easier. In LLM reasoning or agent tasks, shaping can provide feedback before the final answer or task outcome is known.<p class="reading-note"><span>[1]</span> <span class="paper-title">Policy Invariance under Reward Transformations: Theory and Application to Reward Shaping</span> ICML 1999 <a href="https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf" target="_blank" rel="noopener">paper</a>, Andrew Y. Ng, Daishi Harada, Stuart Russell.</p></dd>
             <dt>Potential-based Shaping</dt>
             <dd>A form of reward shaping that adds differences of a potential function. Its appeal is that it can provide intermediate feedback while preserving the intended optimal policy under suitable conditions.</dd>
             <dt>Reward Hacking</dt>
             <dd>A failure mode where the policy exploits flaws in the reward instead of improving the intended behavior. It is especially concerning when the reward model is easier to game than the real goal is to satisfy.<p class="reading-note"><span>[1]</span> <span class="paper-title">Reward Hacking</span> Wiki <a href="https://en.wikipedia.org/wiki/Reward_hacking" target="_blank" rel="noopener">wiki</a></p></dd>
             <dt>Overoptimization</dt>
-            <dd>A failure mode where continued optimization improves reward-model score but degrades the true intended quality. In preference learning, this can happen when the policy learns artifacts of the reward model or dataset.</dd>
+            <dd>A failure mode where continued optimization improves reward-model score but degrades the true intended quality. In preference learning, this can happen when the policy learns artifacts of the reward model or dataset.<p class="reading-note"><span>[1]</span> <span class="paper-title">Scaling Laws for Reward Model Overoptimization</span> ICML 2023 <a href="https://arxiv.org/abs/2210.10760" target="_blank" rel="noopener">paper</a>, Leo Gao, John Schulman, Jacob Hilton.</p></dd>
           </dl>
         </section>
 
@@ -148,9 +153,9 @@
             <dt>Test-time Scaling</dt>
             <dd>Improving inference by spending more computation on sampling, search, verification, or selection rather than changing model weights. In reasoning tasks, this can help uncover stronger reasoning paths at inference time.</dd>
             <dt>Process Reward Model</dt>
-            <dd>A reward model that evaluates intermediate steps rather than only the final answer. It is useful when final-answer rewards are too sparse to show where a reasoning path begins to fail.</dd>
+            <dd>A reward model that evaluates intermediate steps rather than only the final answer. It is useful when final-answer rewards are too sparse to show where a reasoning path begins to fail.<p class="reading-note"><span>[1]</span> <span class="paper-title">Let's Verify Step by Step</span> ICLR 2024 <a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">paper</a>, Hunter Lightman, Vineet Kosaraju et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">Solving Math Word Problems with Process- and Outcome-Based Feedback</span> arXiv 2022 <a href="https://arxiv.org/abs/2211.14275" target="_blank" rel="noopener">paper</a>, Jonathan Uesato, Nate Kushman et al.</p></dd>
             <dt>Outcome Reward Model</dt>
-            <dd>A model or rule that evaluates only the final answer or final task outcome. It is often cheaper to define, but may provide limited guidance for long reasoning or agent trajectories.</dd>
+            <dd>A model or rule that evaluates only the final answer or final task outcome. It is often cheaper to define, but may provide limited guidance for long reasoning or agent trajectories.<p class="reading-note"><span>[1]</span> <span class="paper-title">Solving Math Word Problems with Process- and Outcome-Based Feedback</span> arXiv 2022 <a href="https://arxiv.org/abs/2211.14275" target="_blank" rel="noopener">paper</a>, Jonathan Uesato, Nate Kushman et al.</p></dd>
             <dt>MCTS</dt>
             <dd>Monte Carlo Tree Search. A search method that explores possible reasoning paths through selection, expansion, simulation, and backpropagation, using verifier or reward feedback to guide exploration.<p class="reading-note"><span>[1]</span> <span class="paper-title">Monte Carlo Tree Search</span> Wiki <a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search" target="_blank" rel="noopener">wiki</a></p></dd>
             <dt>UCT</dt>
@@ -190,7 +195,7 @@
           <h2>Multimodal</h2>
           <dl class="glossary-list">
             <dt>Visual Reward Model</dt>
-            <dd>A reward model that evaluates text responses or generated content with respect to visual inputs, prompts, or visual preferences. It extends RLHF-style feedback to settings where the model must understand images as well as language.</dd>
+            <dd>A reward model that evaluates text responses or generated content with respect to visual inputs, prompts, or visual preferences. It extends RLHF-style feedback to settings where the model must understand images as well as language.<p class="reading-note"><span>[1]</span> <span class="paper-title">Unified Reward Model for Multimodal Understanding and Generation</span> arXiv 2025 <a href="https://arxiv.org/abs/2503.05236" target="_blank" rel="noopener">paper</a>, Yibin Wang, Yuhang Zang et al.</p><p class="reading-note"><span>[2]</span> <span class="paper-title">RoVRM: A Robust Visual Reward Model Optimized via Auxiliary Textual Preference Data</span> AAAI 2025 <a href="https://arxiv.org/abs/2408.12109" target="_blank" rel="noopener">paper</a>, Chenglong Wang, Yang Gan et al.</p></dd>
             <dt>Diffusion RL</dt>
             <dd>Reward optimization for diffusion generators, where the denoising process is treated as a trajectory and the final sample receives reward. This lets image generators optimize criteria such as prompt satisfaction or human preference.<p class="reading-note"><span>[1]</span> <span class="paper-title">DPOK: Reinforcement Learning for Fine-Tuning Text-to-Image Diffusion Models</span> NeurIPS 2023 <a href="https://arxiv.org/abs/2305.16381" target="_blank" rel="noopener">paper</a>, Ying Fan, Olivia Watkins et al.</p></dd>
             <dt>Flow Matching RL</dt>
