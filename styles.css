@@ -978,6 +978,8 @@ code {
 
 .footer {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 18px;
   width: min(1200px, calc(100% - 48px));
@@ -985,6 +987,30 @@ code {
   padding: 30px 0 46px;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.flag-counter {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  line-height: 0;
+  box-shadow: 0 1px 0 rgba(31, 34, 37, 0.04);
+}
+
+.flag-counter:hover {
+  border-color: #b8c3c8;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.flag-counter img {
+  display: block;
+  width: 88px;
+  height: auto;
 }
 
 @media (max-width: 940px) {
