@@ -1250,22 +1250,25 @@ code {
 .flag-counter {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: var(--muted);
-  font-size: 0.88rem;
-  font-weight: 600;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
   line-height: 0;
+  box-shadow: 0 1px 0 rgba(31, 34, 37, 0.04);
 }
 
 .flag-counter:hover {
+  border-color: #b8c3c8;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
   text-decoration: none;
 }
 
 .flag-counter img {
   display: block;
-  width: auto;
-  height: 18px;
-  object-fit: contain;
+  width: 112px;
+  height: auto;
 }
 
 @media (max-width: 940px) {
