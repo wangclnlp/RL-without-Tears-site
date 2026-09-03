@@ -1135,6 +1135,13 @@ code {
   background: rgba(255, 255, 255, 0.72);
 }
 
+.math {
+  color: #1f2933;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  white-space: nowrap;
+}
+
 .reading-note {
   margin: 8px 0 0;
   color: var(--faint);

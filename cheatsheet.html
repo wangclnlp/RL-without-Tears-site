@@ -40,7 +40,7 @@
           <a href="#grpo">GRPO</a>
           <a href="#dpo">DPO</a>
           <a href="#mcts">MCTS</a>
-          <a href="#agent-rl">Agent RL</a>
+          <a href="#agent-rl">Agentic RL</a>
           <a href="#multimodal">Multimodal RL</a>
         </nav>
       </aside>
@@ -224,7 +224,7 @@
 
         <section class="cheat-item" id="kl">
           <p class="chapter-number">Policy drift control</p>
-          <h2>Reference-policy Penalty</h2>
+          <h2>KL Penalty</h2>
           <div class="equation">
             \[
               \mathrm{Penalty}_t
@@ -386,8 +386,8 @@
             the reference model, and \(\beta\) controls the strength of the implicit reward ratio.
           </p>
           <p>
-            DPO optimizes the policy directly from preference pairs, avoiding an explicit reward-model-then-RL
-            pipeline in its basic form.
+            DPO optimizes the policy directly from preference pairs, avoiding an explicit pipeline that trains a
+            reward model and then applies RL in its basic form.
           </p>
         </section>
 
